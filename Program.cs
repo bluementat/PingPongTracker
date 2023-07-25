@@ -1,4 +1,13 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using PingPongTracker.Areas.Identity.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PingPongdbContextConnection") ?? throw new InvalidOperationException("Connection string 'PingPongdbContextConnection' not found.");
+
+builder.Services.AddDbContext<PingPongdbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PingPongdbContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
