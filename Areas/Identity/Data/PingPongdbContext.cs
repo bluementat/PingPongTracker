@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PingPongTracker.Models;
 
 namespace PingPongTracker.Areas.Identity.Data;
 
-public class PingPongdbContext : IdentityDbContext<IdentityUser>
+public class PingPongdbContext : IdentityDbContext<ApplicationUser>
 {
     public PingPongdbContext(DbContextOptions<PingPongdbContext> options)
         : base(options)
