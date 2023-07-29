@@ -8,6 +8,8 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
+      - ../tempkeys:/home/vscode/.aspnet/DataProtection-Keys
+      
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
