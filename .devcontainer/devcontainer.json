@@ -32,12 +32,12 @@
 			},
 			
 			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": [
-				"ms-dotnettools.csharp",
+			"extensions": [				
 				"ms-mssql.mssql",
-				"GitHub.copilot",
-				"ms-dotnettools.csdevkit",
-				"ms-dotnettools.vscode-dotnet-runtime"
+				"GitHub.copilot",				
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit@prerelease"
 			]
 		}
 	},

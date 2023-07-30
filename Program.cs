@@ -48,8 +48,8 @@ async Task CheckDatabase()
     var services = scope.ServiceProvider;
     try
     {
-        //var context = services.GetRequiredService<PingPongdbContext>();
-        //await context.Database.MigrateAsync();
+        var context = services.GetRequiredService<PingPongdbContext>();
+        await context.Database.MigrateAsync();
         var seeder = services.GetRequiredService<DataSeeder>();
         await seeder.SeedData();
     }
