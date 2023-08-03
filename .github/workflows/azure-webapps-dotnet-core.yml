@@ -64,7 +64,7 @@ jobs:
         with:
           files: '${{env.DOTNET_ROOT}}/myapp/appsettings.json'
         env:
-          ConnectionStrings.Default: ${{ secrets.PINGPONGDB_CONNECTION_STRING }}
+          ConnectionStrings.PingPongdbContextConnection: ${{ secrets.PINGPONGDB_CONNECTION_STRING }}
           App.ServerRootAddress: ${{ env.SERVER_ROOT_ADDRESS }}
 
       - name: Upload artifact for deployment job
