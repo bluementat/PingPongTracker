@@ -29,7 +29,7 @@ Web application for tracking Pingpong tournament particpants
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images\PingPongLogo01.jpg" alt="Someone playing Ping Pong in a dark room in front of a forge" width="80" height="80">
   </a>
 
   <h2 align="center">PingPong Tracker</h2>
