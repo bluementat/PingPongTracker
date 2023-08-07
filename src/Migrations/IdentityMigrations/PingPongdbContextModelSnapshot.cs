@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PingPongTracker.Areas.Identity.Data;
 
 #nullable disable
 
-namespace PingPongTracker.Migrations
+namespace PingPongTracker.Migrations.IdentityMigrations
 {
     [DbContext(typeof(PingPongdbContext))]
-    [Migration("20230727020108_Initial")]
-    partial class Initial
+    partial class PingPongdbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
