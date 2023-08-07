@@ -1,7 +1,10 @@
-﻿namespace PingPongTracker.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PingPongTracker.Models;
 
 public class Player
 {
+    [Key]
     public Guid PlayerId { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

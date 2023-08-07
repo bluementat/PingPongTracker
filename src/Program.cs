@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PingPongdbContextConnection") ?? throw new InvalidOperationException("Connection string 'PingPongdbContextConnection' not found.");
 
 builder.Services.AddDbContext<PingPongdbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 .AddRoles<IdentityRole>()
@@ -48,8 +49,10 @@ async Task CheckDatabase()
     var services = scope.ServiceProvider;
     try
     {
-        var context = services.GetRequiredService<PingPongdbContext>();
-        await context.Database.MigrateAsync();
+        var IdentityContext = services.GetRequiredService<PingPongdbContext>();
+        await IdentityContext.Database.MigrateAsync();
+        var AppContext = services.GetRequiredService<ApplicationDbContext>();
+        await AppContext.Database.MigrateAsync();
         var seeder = services.GetRequiredService<DataSeeder>();
         await seeder.SeedData();
     }
