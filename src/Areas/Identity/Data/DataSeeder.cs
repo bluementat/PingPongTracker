@@ -46,5 +46,11 @@ public class DataSeeder
             },
             "Password1!");
         }
+        // Does the Admin user have the Admin role?
+        var adminUser = await _userManager.FindByNameAsync("Admin");
+        if (!await _userManager.IsInRoleAsync(adminUser, "Admin"))
+        {
+            await _userManager.AddToRoleAsync(adminUser, "Admin");
+        }
     }
 }
