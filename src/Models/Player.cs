@@ -12,4 +12,6 @@ public class Player
     public int Losses { get; set; }
     public int TotalGames { get; set; }
     public int TotalPoints { get; set; }    
+    public bool Eligible { get; set; } = true; 
+    public bool Active { get; set; } = true;
 }
