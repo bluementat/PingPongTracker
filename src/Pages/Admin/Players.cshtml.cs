@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
 {
+    [Authorize(Roles = "Admin")]
     public class PlayersModel : PageModel
     {
         public List<Player> Players { get; set; } = new();
