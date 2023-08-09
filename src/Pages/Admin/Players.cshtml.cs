@@ -8,13 +8,17 @@ namespace PingPongTracker.Pages.Admin
     [Authorize(Roles = "Admin")]
     public class PlayersModel : PageModel
     {
+        private readonly IPlayerRepository _repo;
+        
         public List<Player> Players { get; set; } = new();
 
         // constructor
-        public PlayersModel(ApplicationDbContext db)
+        public PlayersModel(IPlayerRepository repo)
         {
-            Players = db.Players.ToList();
+            _repo = repo;
+            Players = _repo.GetPlayers();
         }
+        
         
         public void OnGet()
         {

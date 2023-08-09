@@ -47,7 +47,7 @@ public class DataSeeder
             "Password1!");
         }
         // Does the Admin user have the Admin role?
-        var adminUser = await _userManager.FindByNameAsync("Admin");
+        var adminUser = await _userManager.FindByNameAsync("Admin") ?? throw new Exception("The admin user was not found.");
         if (!await _userManager.IsInRoleAsync(adminUser, "Admin"))
         {
             await _userManager.AddToRoleAsync(adminUser, "Admin");
