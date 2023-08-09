@@ -13,19 +13,19 @@ public class RazorPagesTests
     }
 
     [Test]
-    public void Test1()
-    {
-        // var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase("PingPongDb");
-        // var mockDbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options);
-        // var expectedPlayersList = PlayersList01.GetPlayers();
-        // mockDbContext.Setup(db => db.Players.ToList()).Returns(expectedPlayersList);
-        // var pageModel = new PlayersModel(mockDbContext.Object);
+    public void OnGetPlayers_ReturnsListOfPlayers()
+    {        
+        var mockPlayersRepo = new Mock<IPlayerRepository>(MockBehavior.Strict);
+        var expectedPlayersList = PlayersList01.GetPlayers();
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        
+        var pageModel = new PlayersModel(mockPlayersRepo.Object);
 
-        // pageModel.OnGet();
+        pageModel.OnGet();
 
-        // var actualPlayersList = pageModel.Players;
+        var actualPlayersList = pageModel.Players;
 
-        // Assert.That(actualPlayersList, Is.EqualTo(expectedPlayersList));        
+        Assert.That(actualPlayersList, Is.EqualTo(expectedPlayersList));        
         Assert.Pass();
     }
 }

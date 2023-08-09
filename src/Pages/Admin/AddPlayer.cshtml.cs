@@ -8,14 +8,14 @@ namespace PingPongTracker.Pages.Admin
     [Authorize(Roles = "Admin")]
     public class AddPlayerModel : PageModel
     {        
-        private readonly ApplicationDbContext _db;
+        private readonly IPlayerRepository _repo;
         
         [BindProperty]
         public Player NewPlayer { get; set; } = new();
         
-        public AddPlayerModel(ApplicationDbContext db)
+        public AddPlayerModel(IPlayerRepository repo)
         {
-            _db = db;
+            _repo = repo;
         }
 
         public IActionResult OnGet()
@@ -28,11 +28,8 @@ namespace PingPongTracker.Pages.Admin
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-            
-            _db.Players.Add(NewPlayer);            
-            await _db.SaveChangesAsync();
-            
+            }            
+            await _repo.AddPlayer(NewPlayer);                        
             return RedirectToPage("Players");
         }
     }
