@@ -7,10 +7,9 @@ namespace PingPongTracker.Pages.Admin
 {
     [Authorize(Roles = "Admin")]
     public class AddPlayerModel : PageModel
-    {
-        
+    {        
         private readonly ApplicationDbContext _db;
-
+        
         [BindProperty]
         public Player NewPlayer { get; set; } = new();
         
@@ -19,20 +18,21 @@ namespace PingPongTracker.Pages.Admin
             _db = db;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-        }
-
-        // Post the new user to the database
-        public async Task<IActionResult> OnPostAsync(Player newPlayer)
+            return Page();
+        }                 
+        
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
-            _db.Players.Add(newPlayer);
+            
+            _db.Players.Add(NewPlayer);            
             await _db.SaveChangesAsync();
+            
             return RedirectToPage("Players");
         }
     }
