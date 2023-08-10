@@ -55,7 +55,10 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
-      - name: dotnet publish
+      - name: Test with the dotnet CLI
+        run: dotnet test
+
+      - name: Publish with dotnet
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       #substitute production appsettings entries to appsettings json file
