@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PingPongTracker.Models;
 
-namespace PingPongTracker;
+namespace PingPongTracker.Areas.Identity.Data;
 
 public class DataSeeder
 {

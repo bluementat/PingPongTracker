@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PingPongTracker.Models;
 
-namespace PingPongTracker;
+namespace PingPongTracker.Data;
 
 public class ApplicationDbContext : DbContext
 {

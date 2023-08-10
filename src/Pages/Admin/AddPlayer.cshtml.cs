@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PingPongTracker.Data;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
