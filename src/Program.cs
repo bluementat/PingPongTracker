@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PingPongTracker;
 using PingPongTracker.Areas.Identity.Data;
+using PingPongTracker.Data;
 using PingPongTracker.Models;
 
 var builder = WebApplication.CreateBuilder(args);

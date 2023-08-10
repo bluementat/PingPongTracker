@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace PingPongTracker.Models
+namespace PingPongTracker.Models;
+
+public class ApplicationUser : IdentityUser
 {
-    public class ApplicationUser : IdentityUser
-    {
-        public bool Active { get; set; }
-    }
+    public bool Active { get; set; }
 }
+
