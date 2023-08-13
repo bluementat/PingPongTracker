@@ -63,13 +63,14 @@ This is an example of how you may give instructions on setting up your project l
 
 ### Installation
 
+
 1. Install Docker Desktop https://www.docker.com/products/docker-desktop/ 
 
 2. Install Visual Studio Code and the following extenxions
    - C# Dev Kit v0.4.2 (Pre-Release)
    - C# Microsoft Extension 
    - .NET Install Tool for Extension Authors
-   - SQL Server (mssql) <br />
+   - SQL Server (mssql) 
 
 3. Clone the repo
    ```sh
@@ -79,6 +80,7 @@ This is an example of how you may give instructions on setting up your project l
 4. Open the folder of the cloned repo using Visual Studio Code
 
 5. Open the Command Palette (Ctrl-Shift-P) and chose the command "Dev Containers: Rebuild and Reopen in Container". This will start a Dev Container of type [C# (.NET) and MS SQL (dotnet-mssql)](https://github.com/devcontainers/templates/tree/main/src/dotnet-mssql).
+
 The container provides the enviornment to run and modify the application as well as an internal container running a instance of SQL Server with one database - PingPongDB.
 
 6. To build and run the application:
