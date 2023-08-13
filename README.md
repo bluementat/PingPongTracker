@@ -63,20 +63,27 @@ This is an example of how you may give instructions on setting up your project l
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+1. Install Docker Desktop https://www.docker.com/products/docker-desktop/ 
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+2. Install Visual Studio Code and the following extenxions
+   - C# Dev Kit v0.4.2 (Pre-Release)
+   - C# Microsoft Extension 
+   - .NET Install Tool for Extension Authors
+   - SQL Server (mssql) <br />
+
+3. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone  https://github.com/bluementat/PingPongTracker.git
    ```
-3. Install NPM packages
+
+4. Open the folder of the cloned repo using Visual Studio Code
+
+5. Open the Command Palette (Ctrl-Shift-P) and chose the command "Dev Containers: Rebuild and Reopen in Container". This will start a Dev Container of type [C# (.NET) and MS SQL (dotnet-mssql)](https://github.com/devcontainers/templates/tree/main/src/dotnet-mssql).
+The container provides the enviornment to run and modify the application as well as an internal container running a instance of SQL Server with one database - PingPongDB.
+
+6. To build and run the application:
    ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
+   dotnet run --project src/PingPongTracker.cs
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -84,6 +91,8 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 
 ## Usage
+
+The application is under development. Detail usage information will be posted at a later data
 
 <!-- CONTRIBUTING -->
 
@@ -114,9 +123,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Michael Ingersoll - [@michaelcoding@fosstodon.org](https://fosstodon.org/@michaelcoding) 
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/bluementat/PingPongTracker](https://github.com/bluementat/PingPongTracker)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -124,16 +133,10 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
+- [End to End DevOps with GitHub - Workshop ](https://github.com/devops-on-github/workshop)
+- [Dev Containers](https://containers.dev/)
+- [GitHub Action](https://github.com/features/actions)
+- [Damian Brady](https://github.com/Damovisa)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
