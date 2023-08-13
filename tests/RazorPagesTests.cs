@@ -1,5 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.Design;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using PingPongTracker.Data;
+using PingPongTracker.Models;
 using PingPongTracker.Pages.Admin;
 using PingPongTracker.Tests.TestData;
 
@@ -43,5 +49,39 @@ public class RazorPagesTests
 
         Assert.That(actualPlayersList, Is.EqualTo(expectedPlayersList));        
         
+    }
+
+    [Test]
+    public async Task OnPostAddPlayer_ReturnsAPageResult_WhenModelStateIsInvalid()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayersList = PlayersList01.GetPlayers();
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        
+        var pageModel = new AddPlayerModel(mockPlayersRepo.Object);
+
+        pageModel.ModelState.AddModelError("Name", "Required");
+
+        var actualResult = await pageModel.OnPostAsync();
+        //Assert.IsType<PageResult>(actualResult);
+
+        Assert.That(actualResult, Is.InstanceOf<PageResult>());
+    }
+
+    [Test]
+    public async Task OnPostAddPlayer_ReturnsAPageResult_WhenModelStateIsValid()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayersList = PlayersList01.GetPlayers();
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        
+        var pageModel = new AddPlayerModel(mockPlayersRepo.Object);
+
+        pageModel.NewPlayer = new Player { FirstName = "John", LastName = "Doe", Eligible = true, Active = true };
+
+        var actualResult = await pageModel.OnPostAsync();
+        //Assert.IsType<PageResult>(actualResult);
+
+        Assert.That(actualResult, Is.InstanceOf<RedirectToPageResult>());
     }
 }
