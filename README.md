@@ -50,8 +50,8 @@ Application to track pingpong records
 
 ### Built With
 
-- [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-- [![JQuery][JQuery.com]][JQuery-url]
+- [![.NET][.NET]][.NET-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -172,4 +172,5 @@ Project Link: [https://github.com/bluementat/PingPongTracker](https://github.com
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com
-[C#/.Net]: https://dotnet.microsoft.com/en-us/learn/dotnet/what-is-dotnet
+[.NET]: https://img.shields.io/badge/dotnet-.NET-blue?logoColor=violet
+[.NET-url]: https://dotnet.microsoft.com/en-us/learn/dotnet/what-is-dotnet
