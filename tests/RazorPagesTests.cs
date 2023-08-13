@@ -14,6 +14,21 @@ public class RazorPagesTests
     }
 
     [Test]
+    public void OnGetMainenance_ReturnsListOfMaintenanceOptions()
+    {        
+        var expectedMaintenanceList = MaintenanceOptions.GetMaintenanceOptions();        
+        
+        var pageModel = new MaintenanceModel();
+
+        pageModel.OnGet();
+
+        var actualMaintenanceList = pageModel.Options;
+
+        Assert.That(actualMaintenanceList, Is.EqualTo(expectedMaintenanceList));        
+        
+    }
+
+    [Test]
     public void OnGetPlayers_ReturnsListOfPlayers()
     {        
         var mockPlayersRepo = new Mock<IPlayerRepository>(MockBehavior.Strict);
@@ -27,6 +42,6 @@ public class RazorPagesTests
         var actualPlayersList = pageModel.Players;
 
         Assert.That(actualPlayersList, Is.EqualTo(expectedPlayersList));        
-        Assert.Pass();
+        
     }
 }

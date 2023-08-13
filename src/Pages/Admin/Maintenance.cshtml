@@ -1,5 +1,5 @@
 ﻿@page
-@model PingPongTracker.Pages.Admin.MaitenanceModel
+@model PingPongTracker.Pages.Admin.MaintenanceModel
 @{
     ViewData["Title"] = "Maintenance";
 }
@@ -8,6 +8,9 @@
     <h1 class="display-4">Maintenance</h1>    
 </div>
 
-<p>
-    <h5><a asp-page="Players" >Player Management</a></h5>
-</p>
+@foreach (var item in Model.Options)
+{
+    <p>
+        <h5><a asp-page=@item.Page>@item.Name</a></h5>
+    </p>
+}
