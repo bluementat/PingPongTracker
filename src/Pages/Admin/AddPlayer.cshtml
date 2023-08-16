@@ -14,6 +14,10 @@
 		<form class="p-2" method="post">
 			@Html.AntiForgeryToken()				
 				<div class="mb-3">
+						<label for="username" class="form-label col-form-label-sm">User Name</label>
+						<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.UserName" >
+				</div>
+				<div class="mb-3">
 						<label for="firstname" class="form-label col-form-label-sm">First Name</label>
 						<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.FirstName" >
 				</div>
