@@ -27,9 +27,8 @@
   <tbody>
     @foreach(var player in Model.Players)
     {
-        <tr>          
-          @* <td><a asp-page="EditUser" asp-route-id="@user.Id" >@user.UserName</a></td> *@
-          <td>@player.UserName</td>
+        <tr>                    
+          <td><a asp-page="EditPlayer" asp-route-PlayerID=@player.PlayerId >@player.UserName</a></td>
           <td>@player.FirstName</td>
           <td>@player.LastName</td>
           <td>@player.Eligible</td>
@@ -41,5 +40,4 @@
 <br />
 <p>
     There are @Model.Players.Count players.
-</p>
-
+</p

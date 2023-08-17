@@ -84,4 +84,36 @@ public class RazorPagesTests
 
         Assert.That(actualResult, Is.InstanceOf<RedirectToPageResult>());
     }
+
+    [Test]
+    public async Task OnGetEditPlayer_ReturnsAPlayer_WhenPlayerExists()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayer = PlayersList01.GetPlayers().First();
+        mockPlayersRepo.Setup(repo => repo.GetPlayerById(expectedPlayer.PlayerId)).ReturnsAsync(expectedPlayer);
+        
+        var pageModel = new EditPlayerModel(mockPlayersRepo.Object);
+
+        await pageModel.OnGet(expectedPlayer.PlayerId);
+
+        var actualPlayer = pageModel.PlayerToEdit;
+
+        Assert.That(actualPlayer, Is.EqualTo(expectedPlayer));
+    }
+
+    [Test]
+    public async Task OnGetEditPlayer_ReturnsNewPlayer_WhenPlayerDoesNotExist()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayer = new Player { PlayerId = Guid.Empty, FirstName = "", LastName = "", Eligible = true, Active = true };
+        mockPlayersRepo.Setup(repo => repo.GetPlayerById(It.IsAny<Guid>())).ReturnsAsync(expectedPlayer);
+        
+        var pageModel = new EditPlayerModel(mockPlayersRepo.Object);
+
+        await pageModel.OnGet(Guid.NewGuid());
+
+        var actualResult = pageModel.PlayerToEdit;
+
+        Assert.That(actualResult.PlayerId, Is.EqualTo(Guid.Empty));
+    }
 }
