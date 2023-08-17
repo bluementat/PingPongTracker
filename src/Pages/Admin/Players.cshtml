@@ -17,6 +17,7 @@
 <table class="table table-striped">
   <thead>
     <tr>      
+      <th scope="col">User Name</th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
       <th scope="col">Eligible</th>      
@@ -28,6 +29,7 @@
     {
         <tr>          
           @* <td><a asp-page="EditUser" asp-route-id="@user.Id" >@user.UserName</a></td> *@
+          <td>@player.UserName</td>
           <td>@player.FirstName</td>
           <td>@player.LastName</td>
           <td>@player.Eligible</td>
