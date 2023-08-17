@@ -21,6 +21,11 @@ public class PlayerRepository : IPlayerRepository
         return await _dbContext.Players.FindAsync(id) ?? new Player();
     }
 
+    public Player GetPlayerByUserName(string username)
+    {
+        return _dbContext.Players.FirstOrDefault(p => p.UserName == username) ?? new Player();
+    }
+
     public async Task AddPlayer(Player player)
     {
         _dbContext.Players.Add(player);
