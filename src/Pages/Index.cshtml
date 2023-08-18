@@ -6,5 +6,38 @@
 
 <div class="text-center">
     <h1 class="display-4 maintitle">Ping Pong at the Forge</h1>
-    <p>@Model.Message</p>
+    <h2 class="maintitle">@Model.Message</h2>
+</div>
+<hr />
+<div class="text-center">
+    <h2>Season </h2>
+</div>
+<br />
+<hr />
+<div class="text-center">
+    <h1>Standings</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">Player</th>
+                <th scope="col">Wins</th>
+                <th scope="col">Losses</th>
+                <th scope="col">Total Games</th>
+                <th scope="col">Win %</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model.Players)
+            {
+                <tr>
+                    <th scope="row">@player.Rank</th>
+                    <td>@player.UserName</td>
+                    <td>@player.Wins</td>
+                    <td>@player.Losses</td>
+                    <td>@player.TotalGames</td>
+                    <td>@player.WinPercentage</td>
+                </tr>
+            }
+        </tbody>
 </div>
