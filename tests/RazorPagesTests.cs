@@ -63,13 +63,12 @@ public class RazorPagesTests
         pageModel.ModelState.AddModelError("Name", "Required");
 
         var actualResult = await pageModel.OnPostAsync();
-        //Assert.IsType<PageResult>(actualResult);
-
+        
         Assert.That(actualResult, Is.InstanceOf<PageResult>());
     }
 
     [Test]
-    public async Task OnPostAddPlayer_ReturnsAPageResult_WhenModelStateIsValid()
+    public async Task OnPostAddPlayer_Redirects_WhenModelStateIsValid()
     {
         var mockPlayersRepo = new Mock<IPlayerRepository>();
         var expectedPlayersList = PlayersList01.GetPlayers();
@@ -80,8 +79,7 @@ public class RazorPagesTests
         pageModel.NewPlayer = new Player { FirstName = "John", LastName = "Doe", Eligible = true, Active = true };
 
         var actualResult = await pageModel.OnPostAsync();
-        //Assert.IsType<PageResult>(actualResult);
-
+        
         Assert.That(actualResult, Is.InstanceOf<RedirectToPageResult>());
     }
 
@@ -115,5 +113,39 @@ public class RazorPagesTests
         var actualResult = pageModel.PlayerToEdit;
 
         Assert.That(actualResult.PlayerId, Is.EqualTo(Guid.Empty));
+    }
+
+    [Test]
+    public async Task OnPutEditPlayer_ReturnsPageResult_WhenUserNameAlreadyExists()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayer = PlayersList01.GetPlayers().First();
+        mockPlayersRepo.Setup(repo => repo.GetPlayerById(expectedPlayer.PlayerId)).ReturnsAsync(expectedPlayer);
+        mockPlayersRepo.Setup(repo => repo.GoodUserNameChange(expectedPlayer)).Returns(false);
+        
+        var pageModel = new EditPlayerModel(mockPlayersRepo.Object);
+
+        pageModel.PlayerToEdit = expectedPlayer;
+
+        var actualResult = await pageModel.OnPostAsync();
+
+        Assert.That(actualResult, Is.InstanceOf<PageResult>());
+    }
+
+    [Test]
+    public async Task OnPutEditPlayer_ReturnsRedirectToPageResult_WhenUserNameDoesNotExist()
+    {
+        var mockPlayersRepo = new Mock<IPlayerRepository>();
+        var expectedPlayer = PlayersList01.GetPlayers().First();
+        mockPlayersRepo.Setup(repo => repo.GetPlayerById(expectedPlayer.PlayerId)).ReturnsAsync(expectedPlayer);
+        mockPlayersRepo.Setup(repo => repo.GoodUserNameChange(expectedPlayer)).Returns(true);
+        
+        var pageModel = new EditPlayerModel(mockPlayersRepo.Object);
+
+        pageModel.PlayerToEdit = expectedPlayer;
+
+        var actualResult = await pageModel.OnPostAsync();
+
+        Assert.That(actualResult, Is.InstanceOf<RedirectToPageResult>());
     }
 }

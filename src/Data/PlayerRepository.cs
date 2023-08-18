@@ -1,4 +1,5 @@
-﻿using PingPongTracker.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PingPongTracker.Models;
 
 namespace PingPongTracker.Data;
 
@@ -24,6 +25,22 @@ public class PlayerRepository : IPlayerRepository
     public Player GetPlayerByUserName(string username)
     {
         return _dbContext.Players.FirstOrDefault(p => p.UserName == username) ?? new Player();
+    }
+
+    public bool PlayerUserNameChanged(Player player)
+    {
+        var playerFromDb = _dbContext.Players.Find(player.PlayerId) ?? new Player();
+        return playerFromDb.UserName != player.UserName;
+    }
+
+    public bool GoodUserNameChange(Player player)
+    {        
+        var playerFromDb = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.PlayerId == player.PlayerId) ?? new Player();                       
+        if(playerFromDb.UserName != player.UserName)
+        {
+            return _dbContext.Players.FirstOrDefault(p => p.UserName == player.UserName) is null;
+        }        
+        return true;
     }
 
     public async Task AddPlayer(Player player)
