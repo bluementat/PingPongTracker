@@ -14,24 +14,24 @@
 		<form class="p-2" method="post">
 			@Html.AntiForgeryToken()				
 				<div class="mb-3">
-						<label for="username" class="form-label col-form-label-sm">User Name</label>
-						<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.UserName" >
+					<label for="username" class="form-label col-form-label-sm">User Name</label>
+					<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.UserName" >
 				</div>
 				<div class="mb-3">
-						<label for="firstname" class="form-label col-form-label-sm">First Name</label>
-						<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.FirstName" >
+					<label for="firstname" class="form-label col-form-label-sm">First Name</label>
+					<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.FirstName" >
 				</div>
 				<div class="mb-3">
-						<label for="lastname" class="form-label col-form-label-sm">Last Name</label>
-						<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.LastName" >						
+					<label for="lastname" class="form-label col-form-label-sm">Last Name</label>
+					<input type="text" class="form-control form-control-sm" asp-for="NewPlayer.LastName" >						
 				</div>				
 				<div class="mb-1">
-						<label for="eligible" class="form-label col-form-label-sm">Eligible</label>
-						<input type="checkbox" class="form-control form-control-sm form-check-input"  asp-for="NewPlayer.Eligible" >						
+					<label for="eligible" class="form-label col-form-label-sm">Eligible</label>
+					<input type="checkbox" class="form-control form-control-sm form-check-input"  asp-for="NewPlayer.Eligible" >						
 				</div>
 				<div class="mb-1">
-						<label for="active" class="form-label col-form-label-sm">Active</label>
-						<input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="NewPlayer.Active" >						
+					<label for="active" class="form-label col-form-label-sm">Active</label>
+					<input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="NewPlayer.Active" >						
 				</div>
 				<br />
 				<button type="submit" class="btn btn-lg btn-primary">Submit</button>
