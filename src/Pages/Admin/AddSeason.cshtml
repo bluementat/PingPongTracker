@@ -14,14 +14,14 @@
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
-                <label for="seassonname" class="form-label col-form-label-sm">Season Name</label>
+                <label for="SeasonToAdd.SeasonName" class="form-label col-form-label-sm">Season Name</label>
                 <input type="text" class="form-control form-control-sm" asp-for="SeasonToAdd.SeasonName" />
-                <div asp-validation-for="SeasonToAdd.SeasonName" class="text-danger"></div>
+                <span asp-validation-for="SeasonToAdd.SeasonName" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label for="startdate" class="form-label col-form-label-sm">Start Date</label>
+                <label for="SeasonToAdd.SeasonStart" class="form-label col-form-label-sm">Start Date</label>
                 <input type="date" class="form-control form-control-sm" asp-for="SeasonToAdd.SeasonStart" value=@DateTime.Today.ToString("YYYY-MM-DD") />
-                <div asp-validation-for="SeasonToAdd.SeasonStart" class="text-danger"></div>
+                <span asp-validation-for="SeasonToAdd.SeasonStart" class="text-danger"></span>
             </div>
             <div class="mb-1">
                     <label for="active" class="form-label col-form-label-sm">Active</label>
