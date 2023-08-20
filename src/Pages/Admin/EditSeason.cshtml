@@ -1,0 +1,43 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.EditSeasonModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit a Season";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Edit Season</h3>    
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <form class="p-2" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <input type="hidden" asp-for="SeasonToEdit.SeasonId" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="SeasonToEdit.SeasonName" class="form-label"></label>
+                <input type="text" class="form-control form-control-sm" asp-for="SeasonToEdit.SeasonName" />
+                <span asp-validation-for="SeasonToEdit.SeasonName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SeasonToEdit.SeasonStart" class="form-label"></label>
+                <input type="date" class="form-control form-control-sm" asp-for="SeasonToEdit.SeasonStart" />
+                <span asp-validation-for="SeasonToEdit.SeasonStart" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label for="SeasonToEdit.Active" class="form-label col-form-label-sm">Active</label>
+                <input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="SeasonToEdit.Active" >						
+			</div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<p>
+    <h5><a asp-page="Seasons" >Cancel - Return to Seasons</a></h5>
+</p>
+
