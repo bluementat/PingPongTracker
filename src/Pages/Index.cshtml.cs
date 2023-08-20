@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
 using PingPongTracker.Models;
 using PingPongTracker.Pages.Admin;
+using static PingPongTracker.Data.Greetings;
 
 namespace PingPongTracker.Pages;
 
@@ -11,7 +12,9 @@ public class IndexModel : PageModel
     private readonly ILogger<IndexModel> _logger;
     private readonly ApplicationDbContext _context;
 
-    public string Message { get; set; } = string.Empty;
+    public Greeting greeting { get; set; } = new Greeting(0, string.Empty, string.Empty, string.Empty);
+    public string SeasonTitle { get; set; } = string.Empty;
+    public string SeasonStartDate { get; set; } = string.Empty;
     public IEnumerable<PlayerStandingViewModel> Players { get; set; } = new List<PlayerStandingViewModel>();
 
     public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext Context)
@@ -22,10 +25,23 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
+                
         // Randomly select a greeting
         var greetings = Greetings.GetGreetings().ToList();
-        var greeting = greetings[new Random().Next(0, greetings.Count)];
-        Message = greeting.Text;
+        greeting = greetings[new Random().Next(0, greetings.Count)];        
+
+        // Get and displkay the current season
+        var CurrentSeason = _context.Seasons.Where(s => s.Active).FirstOrDefault();
+        if (CurrentSeason != null)
+        {
+            SeasonTitle = CurrentSeason.SeasonName;
+            SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");
+        }
+        else
+        {
+            SeasonTitle = "No Season Active";
+            SeasonStartDate = string.Empty;
+        }
 
         IEnumerable<PlayerStandingViewModel> PreSort = new List<PlayerStandingViewModel>();
 

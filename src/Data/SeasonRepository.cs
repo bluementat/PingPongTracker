@@ -44,10 +44,15 @@ public class SeasonRepository : ISeasonRepository
         // If the updated season is active, deactivate all other seasons
         if (season.Active)
         {
-            var seasons = await _context.Seasons.ToListAsync();
+            var seasons = await _context.Seasons.AsNoTracking().ToListAsync();
             foreach (var s in seasons)
             {
-                s.Active = false;
+                if(s.Active && s.SeasonId != season.SeasonId)
+                {
+                    s.Active = false;
+                    _context.Seasons.Update(s);
+                }
+                
             }
         }
         

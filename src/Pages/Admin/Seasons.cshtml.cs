@@ -18,7 +18,7 @@ namespace PingPongTracker.Pages.Admin
 
         public void OnGet()
         {
-            Seasons = _context.Seasons.ToList();
+            Seasons = _context.Seasons.OrderBy(s => s.SeasonStart).ToList();
         }
     }
 }

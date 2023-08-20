@@ -3,19 +3,23 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
+<br />
 <div class="text-center">
     <h1 class="display-4 maintitle">Ping Pong at the Forge</h1>
-    <h2 class="maintitle">@Model.Message</h2>
+    <h2 class="maintitle">@Model.greeting.Text</h2>
+    <h6> (@Model.greeting.Language)</h6>
 </div>
 <hr />
+<br />
+<br />
+
 <div class="text-center">
-    <h2>Season </h2>
+    <h2>Current Season: @Model.SeasonTitle @Model.SeasonStartDate </h2>
 </div>
 <br />
-<hr />
+
 <div class="text-center">
-    <h1>Standings</h1>
+    <h3>Standings</h3>
     <table class="table table-striped">
         <thead>
             <tr>
