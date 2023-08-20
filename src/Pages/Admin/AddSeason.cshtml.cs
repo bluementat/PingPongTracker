@@ -7,14 +7,14 @@ namespace PingPongTracker.Pages.Admin
 {
     public class AddSeasonModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISeasonRepository _repo;
 
         [BindProperty]
         public Season SeasonToAdd { get; set; } = new();
         
-        public AddSeasonModel(ApplicationDbContext context)
+        public AddSeasonModel(ISeasonRepository Repo)
         {
-            _context = context;
+            _repo = Repo;
         }
 
         public void OnGet()
@@ -28,8 +28,7 @@ namespace PingPongTracker.Pages.Admin
                 return Page();
             }
 
-            _context.Seasons.Add(SeasonToAdd);
-            await _context.SaveChangesAsync();
+            await _repo.AddSeason(SeasonToAdd);            
             return RedirectToPage("Seasons");
         }
     }
