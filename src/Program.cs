@@ -15,6 +15,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 .AddEntityFrameworkStores<PingPongdbContext>();
 
 builder.Services.AddTransient<IPlayerRepository>(provider => new PlayerRepository(provider.GetRequiredService<ApplicationDbContext>()));
+builder.Services.AddTransient<ISeasonRepository>(provider => new SeasonRepository(provider.GetRequiredService<ApplicationDbContext>()));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
