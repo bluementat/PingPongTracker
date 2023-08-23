@@ -1,0 +1,30 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.Tournament.TournamentModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Prepare a Tournament";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Prepare a Tournament</h3>    
+</div>
+<br />
+<br />
+<div class="text-center">
+    <h5 class=>Select Players</h5>    
+    <form class="p-2" method="post">
+        @foreach(var player in @Model.EligiblePlayersList)
+        {
+            <div class="row justify-content-md-center">
+                <div class="col-2">
+                    <span class="maintitle">@player.UserName</span>  
+                </div>
+                <div class="col-1">                    
+                    <input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="@player.Eligible" >
+                </div>
+            </div>        
+        }
+        <div class="fillerspace"></div>
+        <button type="submit" class="btn btn-lg btn-primary">Randomize!</button>
+    </form>
+</div>

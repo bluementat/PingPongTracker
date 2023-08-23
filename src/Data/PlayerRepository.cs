@@ -33,6 +33,11 @@ public class PlayerRepository : IPlayerRepository
         return playerFromDb.UserName != player.UserName;
     }
 
+    public IEnumerable<Player> GetActivePlayers()
+    {
+        return  _dbContext.Players.Where(p => p.Active);
+    }
+
     public bool GoodUserNameChange(Player player)
     {        
         var playerFromDb = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.PlayerId == player.PlayerId) ?? new Player();                       
