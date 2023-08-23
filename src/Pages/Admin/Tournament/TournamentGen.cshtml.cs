@@ -30,5 +30,25 @@ namespace PingPongTracker.Pages.Admin.Tournament
                  EligiblePlayersList.Add(new EligiblePlayers(player.PlayerId, player.UserName, player.Eligible));
              }
         }
+
+        public async Task<IActionResult> OnPost()
+        {
+            var Tournament = new Models.Tournament();
+
+            // Add Eligible Players to the Torunament in Random Order
+            var eligiblePlayers = EligiblePlayersList.Where(p => p.Eligible == true).ToList();
+            var random = new Random();
+            var shuffledPlayers = eligiblePlayers.OrderBy(p => random.Next()).ToList();
+            foreach(var player in shuffledPlayers)
+            {
+                Tournament.Players.Add(new Player { PlayerId = player.PlayerId });
+            }
+
+            // Add Tournament to Database
+            _context.Tournaments.Add(Tournament);
+            Guid TourneyID = await _context.SaveChangesAsync();
+
+
+        }
     }
 }
