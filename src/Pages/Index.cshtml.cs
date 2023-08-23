@@ -78,6 +78,7 @@ public class IndexModel : PageModel
 
         // Get and display the all-time standings
         PreSort = new List<PlayerStandingViewModel>();
+        players = _context.Players.ToList();
         foreach(var player in players)
         {
             var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId).Count();

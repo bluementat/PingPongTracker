@@ -24,3 +24,7 @@ body {
 .maintitle {
 font-family: 'Bungee Spice', cursive;
 }
+
+.fillerspace {
+  height: 100px;
+}
