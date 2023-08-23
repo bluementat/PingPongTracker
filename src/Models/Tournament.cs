@@ -10,7 +10,6 @@ public class Tournament
     public DateTime TournamentDate { get; set; }
     public string Location { get; set; } = string.Empty;
     
-    public List<Player> Players { get; set; } = new();
-    public List<Game> Games { get; set; } = new();
+    public List<Player> Players { get; set; } = new();    
 
 }

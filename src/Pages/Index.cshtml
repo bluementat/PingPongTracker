@@ -14,12 +14,51 @@
 <br />
 
 <div class="text-center">
-    <h2>Current Season: @Model.SeasonTitle @Model.SeasonStartDate </h2>
+    <h2>Current Season: <span class="maintitle">@Model.SeasonTitle</span> @Model.SeasonStartDate </h2>
 </div>
 <br />
 
+@if(@Model.CurrentSeason is not null)
+{
+    <div>
+        <div class="text-center">
+            <h3>Standings</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Player</th>
+                        <th scope="col">Wins</th>
+                        <th scope="col">Losses</th>
+                        <th scope="col">Total Games</th>
+                        <th scope="col">Win %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in Model.SeasonStandings)
+                    {
+                        <tr>
+                            <th scope="row">@player.Rank</th>
+                            <td>@player.UserName</td>
+                            <td>@player.Wins</td>
+                            <td>@player.Losses</td>
+                            <td>@player.TotalGames</td>
+                            <td>@player.WinPercentage</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<br />
+<br />
+<br />
+<br />
+
 <div class="text-center">
-    <h3>Standings</h3>
+    <h3>All-Time Standings</h3>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -32,7 +71,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var player in Model.Players)
+            @foreach (var player in Model.AllTimeStandings)
             {
                 <tr>
                     <th scope="row">@player.Rank</th>
@@ -44,4 +83,5 @@
                 </tr>
             }
         </tbody>
+    </table>
 </div>

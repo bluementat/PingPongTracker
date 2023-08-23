@@ -24,4 +24,6 @@ public class Game
     public Guid Player1WinnerId { get; set; }
     [Required]
     public Guid Player2WinnerId { get; set; }
+
+    public Tournament Tournament { get; set; } = new();
 }
