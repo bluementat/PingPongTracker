@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Permissions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Identity.Client;
 using PingPongTracker.Data;
 using PingPongTracker.Models;
 using PingPongTracker.Pages.Admin;
@@ -15,7 +17,9 @@ public class IndexModel : PageModel
     public Greeting greeting { get; set; } = new Greeting(0, string.Empty, string.Empty, string.Empty);
     public string SeasonTitle { get; set; } = string.Empty;
     public string SeasonStartDate { get; set; } = string.Empty;
-    public IEnumerable<PlayerStandingViewModel> Players { get; set; } = new List<PlayerStandingViewModel>();
+    public IEnumerable<PlayerStandingViewModel> AllTimeStandings { get; set; } = new List<PlayerStandingViewModel>();
+    public IEnumerable<PlayerStandingViewModel> SeasonStandings { get; set; } = new List<PlayerStandingViewModel>();
+    public Season? CurrentSeason { get; set; } 
 
     public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext Context)
     {
@@ -30,12 +34,41 @@ public class IndexModel : PageModel
         var greetings = Greetings.GetGreetings().ToList();
         greeting = greetings[new Random().Next(0, greetings.Count)];        
 
-        // Get and displkay the current season
-        var CurrentSeason = _context.Seasons.Where(s => s.Active).FirstOrDefault();
+        // Get all active players and create a PreSort list
+        var players = _context.Players.Where(p => p.Active).ToList();
+        IEnumerable<PlayerStandingViewModel> PreSort = new List<PlayerStandingViewModel>();
+        
+        // Get and display the current season and the standings, if there is one.
+        CurrentSeason = _context.Seasons.Where(s => s.Active).FirstOrDefault();
         if (CurrentSeason != null)
         {
             SeasonTitle = CurrentSeason.SeasonName;
             SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");
+
+            List<Tournament> SeasonTournaments = _context.Seasons.Where(s => s.SeasonId == CurrentSeason.SeasonId).SelectMany(s => s.Tournaments).ToList();
+
+            foreach(var player in players)
+            {
+                var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
+                wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
+                var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament) 
+                    || g.Team1Player2Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)
+                    || g.Team2Player1Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)
+                    || g.Team2Player2Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
+                var winPercentage = totalGames == 0 ? 0 : (int)Math.Round((double)wins / totalGames * 100);
+                var losses = totalGames - wins;
+                PreSort = PreSort.Append(new PlayerStandingViewModel
+                {
+                    Rank = 0,
+                    UserName = player.UserName,
+                    Wins = wins,
+                    Losses = losses,
+                    TotalGames = totalGames,
+                    WinPercentage = winPercentage
+                });
+
+                SeasonStandings = PreSort.OrderBy(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+            }
         }
         else
         {
@@ -43,11 +76,8 @@ public class IndexModel : PageModel
             SeasonStartDate = string.Empty;
         }
 
-        IEnumerable<PlayerStandingViewModel> PreSort = new List<PlayerStandingViewModel>();
-
-        // Get all active players
-        var players = _context.Players.Where(p => p.Active).ToList();
-
+        // Get and display the all-time standings
+        PreSort = new List<PlayerStandingViewModel>();
         foreach(var player in players)
         {
             var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId).Count();
@@ -68,7 +98,7 @@ public class IndexModel : PageModel
             });
         }
 
-        Players = PreSort.OrderBy(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+        AllTimeStandings = PreSort.OrderBy(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
 
     }
 }
