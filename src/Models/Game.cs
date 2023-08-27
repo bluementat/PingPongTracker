@@ -5,7 +5,7 @@ namespace PingPongTracker.Models;
 public class Game
 {
     [Key]
-    public Guid MatchupId { get; set; }
+    public Guid GameId { get; set; }
     [Required]
     public Guid Team1Player1Id { get; set; }
     [Required]

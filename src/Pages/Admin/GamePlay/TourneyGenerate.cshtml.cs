@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
 using PingPongTracker.Models;
 
-namespace PingPongTracker.Pages.Admin.Tournament
+namespace PingPongTracker.Pages.Admin.GamePlay
 {
     public class TournamentModel : PageModel
     {
@@ -31,9 +31,9 @@ namespace PingPongTracker.Pages.Admin.Tournament
              }
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var Tournament = new Models.Tournament();
+            var Tournament = new Tournament();
 
             // Add Eligible Players to the Torunament in Random Order
             var eligiblePlayers = EligiblePlayersList.Where(p => p.Eligible == true).ToList();
@@ -46,9 +46,9 @@ namespace PingPongTracker.Pages.Admin.Tournament
 
             // Add Tournament to Database
             _context.Tournaments.Add(Tournament);
-            Guid TourneyID = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-
+            return RedirectToPage("/Admin/GamePlay/TourneyAccept", new { id = Tournament.TournamentId });
         }
     }
 }
