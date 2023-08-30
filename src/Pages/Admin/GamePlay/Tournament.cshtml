@@ -1,0 +1,51 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.GamePlay.TournamentModel
+@{
+    ViewData["Title"] = "Prepare a Tournament";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Tournament</h3>    
+</div>
+
+<br />
+<br />
+
+@if(@Model.CurrentSeason == null)
+{
+    <div class="text-center">
+        <h3 class="display-4">No Season</h3>
+        <p>There is no current season. Please create a season first.</p>
+        <a class="btn btn-primary" asp-page="/Admin/Seasons">Go To Seasons Page</a>
+    </div>
+}
+
+@if(@Model.CurrentSeason is not null && @Model.CurrentTeams.Count() == 0)
+{
+    <div class="text-center">
+    <h4 class="display-6">No Active Tournament</h4>
+    <h4>Please select players to create a new tournament</h4>   
+    <br />
+    <br />
+    <form class="p-2" method="post">
+        @foreach(var player in @Model.EligiblePlayersList)
+        {
+            <div class="row justify-content-md-center">
+                <div>
+					<input type="hidden" asp-for="@player.PlayerId" />
+				</div>
+                <div class="col-2">                    
+                    <h4><input type="text" class="form-control form-control-sm" asp-for="@player.UserName" readonly></h4>
+                </div>
+                <div class="col-1">                    
+                    <input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="@player.Eligible" >
+                </div>
+            </div>        
+        }
+        <div class="fillerspace"></div>
+        <button type="submit" class="btn btn-lg btn-success">Randomize and Create Teams</button>
+    </form>
+</div>
+}
+
+

@@ -23,7 +23,6 @@ public class Game
     [Required]
     public Guid Player1WinnerId { get; set; }
     [Required]
-    public Guid Player2WinnerId { get; set; }
-
-    public Tournament Tournament { get; set; } = new();
+    public Guid Player2WinnerId { get; set; }    
+    public Guid SeasonId { get; set; }
 }

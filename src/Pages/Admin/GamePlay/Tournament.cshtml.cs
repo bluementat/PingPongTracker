@@ -5,30 +5,47 @@ using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
-    public class TourneyGenerateModel : PageModel
+    public class TournamentModel : PageModel
     {
-        private readonly IPlayerRepository _playerRepository;
         private readonly ApplicationDbContext _context;
-        private IEnumerable<Player> _activePlayers;    
+        private readonly IPlayerRepository _playerRepository;
+        private IEnumerable<Player> _activePlayers;
 
         public record EligiblePlayers(Guid PlayerId, string UserName, bool Eligible);
-
+        [BindProperty]
+        public IEnumerable<Team> CurrentTeams { get; set; } = new List<Team>();        
         [BindProperty]
         public List<EligiblePlayers> EligiblePlayersList { get; set; } = new();
+        [BindProperty]
+        public Season? CurrentSeason { get; set; }
 
-        public TourneyGenerateModel(ApplicationDbContext context, IPlayerRepository playerRepository)
+        public TournamentModel(ApplicationDbContext context, IPlayerRepository playerRepository)
         {
             _context = context;
             _playerRepository = playerRepository;
             _activePlayers = _playerRepository.GetActivePlayers();
         }
-        
+
+
         public void OnGet()
         {
-             foreach(var player in _activePlayers)
-             {
-                 EligiblePlayersList.Add(new EligiblePlayers(player.PlayerId, player.UserName, player.Eligible));
-             }
+            // If there is no active season, show nothing            
+            CurrentSeason = _context.Seasons.Where(s => s.Active).FirstOrDefault();
+            if (CurrentSeason != null)
+            {
+                // If there are Teams defined, then we are in a season. Do not show the eligible players list.
+                if(_context.Teams.Count() > 0)
+                {
+                    CurrentTeams = _context.Teams.ToList();
+                }
+                else
+                {
+                    foreach(var player in _activePlayers)
+                    {
+                        EligiblePlayersList.Add(new EligiblePlayers(player.PlayerId, player.UserName, player.Eligible));
+                    }
+                }    
+            }                                                                    
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -39,10 +56,8 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             var shuffledPlayers = eligiblePlayers.OrderBy(p => random.Next()).ToList();
 
             if(shuffledPlayers.Count % 2 != 0)
-            {
-                _context.Teams.Add(new Team { Player1Id = shuffledPlayers[0].PlayerId, Player1UserName = shuffledPlayers[0].UserName });
-
-                for( int i = 1; i < shuffledPlayers.Count; i++)
+            {                
+                for( int i = 0; i < shuffledPlayers.Count-1; i++)
                 {
                    _context.Teams.Add(new Team 
                    { 
@@ -50,8 +65,15 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                         Player1UserName = shuffledPlayers[i].UserName,
                         Player2Id = shuffledPlayers[i+1].PlayerId,
                         Player2UserName = shuffledPlayers[i+1].UserName 
-                    });
+                    });                    
                 }
+                _context.Teams.Add(new Team 
+                { 
+                    Player1Id = Guid.Empty,
+                    Player1UserName = "ODD PERSON OUT",
+                    Player2Id = shuffledPlayers[shuffledPlayers.Count-1].PlayerId, 
+                    Player2UserName = shuffledPlayers[shuffledPlayers.Count-1].UserName 
+                });                    
             }
             else
             {

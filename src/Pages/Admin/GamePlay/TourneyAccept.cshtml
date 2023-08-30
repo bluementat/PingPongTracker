@@ -5,7 +5,20 @@
 }
 
 <div class="text-center">
-    <h3 class="display-4">Prepare a Tournament</h3>    
+    <h3 class="display-4">Proposed Teams for Tournament</h3>    
 </div>
+
 <br />
 <br />
+
+@foreach(var team in Model.ProposedTeams)
+{
+    <div class="row">        
+        <div class="col-md-4">
+            <h4>@team.Player1UserName</h4>
+        </div>
+        <div class="col-md-4">
+            <h4>@team.Player2UserName</h4>
+        </div>
+    </div>
+}

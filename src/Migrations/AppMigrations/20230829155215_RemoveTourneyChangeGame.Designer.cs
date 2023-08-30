@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PingPongTracker.Data;
 
@@ -11,9 +12,11 @@ using PingPongTracker.Data;
 namespace PingPongTracker.Migrations.AppMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230829155215_RemoveTourneyChangeGame")]
+    partial class RemoveTourneyChangeGame
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,7 +116,7 @@ namespace PingPongTracker.Migrations.AppMigrations
                     b.ToTable("Seasons");
                 });
 
-            modelBuilder.Entity("PingPongTracker.Models.Team", b =>
+            modelBuilder.Entity("PingPongTracker.Team", b =>
                 {
                     b.Property<int>("TeamID")
                         .ValueGeneratedOnAdd()
