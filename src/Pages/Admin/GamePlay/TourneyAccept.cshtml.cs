@@ -10,7 +10,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         private readonly ApplicationDbContext _context;
 
         [BindProperty]
-        public IEnumerable<Team> ProposedTeams { get; set; } = new List<Team>();        
+        public List<Team> ProposedTeams { get; set; } = new List<Team>();        
         
         public TourneyAcceptModel(ApplicationDbContext context)
         {
@@ -21,6 +21,21 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         public void OnGet(Guid id)
         {
             
-        }        
+        } 
+
+        public IActionResult OnPostAcceptTeams()
+        {
+            return RedirectToPage("Tournament");
+        }    
+
+        public async Task<IActionResult> OnPostNewTeams()
+        {
+            // Delete the teams
+            var TheTeams = _context.Teams.ToList();
+            _context.Teams.RemoveRange(TheTeams);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToPage("Tournament");
+        }   
     }
 }

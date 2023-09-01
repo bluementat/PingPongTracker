@@ -13,7 +13,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         public record EligiblePlayers(Guid PlayerId, string UserName, bool Eligible);
         [BindProperty]
-        public IEnumerable<Team> CurrentTeams { get; set; } = new List<Team>();        
+        public List<Team> CurrentTeams { get; set; } = new List<Team>();        
         [BindProperty]
         public List<EligiblePlayers> EligiblePlayersList { get; set; } = new();
         [BindProperty]
@@ -48,7 +48,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             }                                                                    
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostMakeTeams()
         {            
             // Add Eligible Players to the Torunament in Random Order
             var eligiblePlayers = EligiblePlayersList.Where(p => p.Eligible == true).ToList();
@@ -57,7 +57,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
             if(shuffledPlayers.Count % 2 != 0)
             {                
-                for( int i = 0; i < shuffledPlayers.Count-1; i++)
+                for( int i = 0; i < shuffledPlayers.Count-1; i += 2)
                 {
                    _context.Teams.Add(new Team 
                    { 
@@ -77,7 +77,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             }
             else
             {
-                for( int i = 0; i < shuffledPlayers.Count; i++)
+                for( int i = 0; i < shuffledPlayers.Count; i += 2)
                 {
                    _context.Teams.Add(new Team 
                    { 
@@ -91,6 +91,13 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             
             await _context.SaveChangesAsync();
             return RedirectToPage("/Admin/GamePlay/TourneyAccept");
+        }
+
+        public async Task OnPostTourneyComplete()
+        {
+            _context.Teams.RemoveRange(_context.Teams);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
