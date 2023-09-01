@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PingPongTracker.Data;
 
@@ -11,9 +12,11 @@ using PingPongTracker.Data;
 namespace PingPongTracker.Migrations.AppMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230827113920_ChangeToGameId")]
+    partial class ChangeToGameId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace PingPongTracker.Migrations.AppMigrations
                     b.Property<Guid>("Player2WinnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SeasonId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("Team1Player1Id")
                         .HasColumnType("uniqueidentifier");
 
@@ -58,7 +58,12 @@ namespace PingPongTracker.Migrations.AppMigrations
                     b.Property<int>("Team2Score")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("GameId");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("Games");
                 });
@@ -83,11 +88,16 @@ namespace PingPongTracker.Migrations.AppMigrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PlayerId");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("Players");
                 });
@@ -113,31 +123,68 @@ namespace PingPongTracker.Migrations.AppMigrations
                     b.ToTable("Seasons");
                 });
 
-            modelBuilder.Entity("PingPongTracker.Models.Team", b =>
+            modelBuilder.Entity("PingPongTracker.Models.Tournament", b =>
                 {
-                    b.Property<int>("TeamID")
+                    b.Property<Guid>("TournamentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamID"));
-
-                    b.Property<Guid>("Player1Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Player1UserName")
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Player2Id")
+                    b.Property<Guid?>("SeasonId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Player2UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("TournamentDate")
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("TeamID");
+                    b.Property<DateTime?>("TournamentEndDate")
+                        .HasColumnType("datetime2");
 
-                    b.ToTable("Teams");
+                    b.HasKey("TournamentId");
+
+                    b.HasIndex("SeasonId");
+
+                    b.ToTable("Tournaments");
+                });
+
+            modelBuilder.Entity("PingPongTracker.Models.Game", b =>
+                {
+                    b.HasOne("PingPongTracker.Models.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("PingPongTracker.Models.Player", b =>
+                {
+                    b.HasOne("PingPongTracker.Models.Tournament", null)
+                        .WithMany("Players")
+                        .HasForeignKey("TournamentId");
+                });
+
+            modelBuilder.Entity("PingPongTracker.Models.Tournament", b =>
+                {
+                    b.HasOne("PingPongTracker.Models.Season", null)
+                        .WithMany("Tournaments")
+                        .HasForeignKey("SeasonId");
+                });
+
+            modelBuilder.Entity("PingPongTracker.Models.Season", b =>
+                {
+                    b.Navigation("Tournaments");
+                });
+
+            modelBuilder.Entity("PingPongTracker.Models.Tournament", b =>
+                {
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

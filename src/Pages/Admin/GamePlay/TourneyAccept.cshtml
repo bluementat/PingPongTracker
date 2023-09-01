@@ -1,0 +1,39 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.GamePlay.TourneyAcceptModel
+@{
+    ViewData["Title"] = "Prepare a Tournament";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Proposed Teams for Tournament</h3>    
+</div>
+
+<br />
+<br />
+
+<div class="text-center">        
+    <h4 class="display-7">Here They Are!</h4>  
+    <br />  
+    <div class="row justify-content-md-center row-cols-md-4 g-4"> 
+        @for(int i = 0; i < @Model.ProposedTeams.Count(); i++)
+        {
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Team @(i+1)
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@Model.ProposedTeams[i].Player1UserName</li>
+                        <li class="list-group-item">@Model.ProposedTeams[i].Player2UserName</li>                
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+    <br />  
+    <br />
+    <form class="p-2" method="post" >
+        <button type="submit" class="btn btn-lg btn-success" asp-page-handler="AcceptTeams">Accept Teams</button>
+        <button type="submit" class="btn btn-lg btn-warning" asp-page-handler="NewTeams">Do Over</button>
+    </form>  
+</div>

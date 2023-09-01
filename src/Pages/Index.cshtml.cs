@@ -43,18 +43,16 @@ public class IndexModel : PageModel
         if (CurrentSeason != null)
         {
             SeasonTitle = CurrentSeason.SeasonName;
-            SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");
-
-            List<Tournament> SeasonTournaments = _context.Seasons.Where(s => s.SeasonId == CurrentSeason.SeasonId).SelectMany(s => s.Tournaments).ToList();
+            SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");            
 
             foreach(var player in players)
             {
-                var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
-                wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
-                var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament) 
-                    || g.Team1Player2Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)
-                    || g.Team2Player1Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)
-                    || g.Team2Player2Id == player.PlayerId && SeasonTournaments.Contains(g.Tournament)).Count();
+                var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
+                wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
+                var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId 
+                    || g.Team1Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
+                    || g.Team2Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
+                    || g.Team2Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
                 var winPercentage = totalGames == 0 ? 0 : (int)Math.Round((double)wins / totalGames * 100);
                 var losses = totalGames - wins;
                 PreSort = PreSort.Append(new PlayerStandingViewModel

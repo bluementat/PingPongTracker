@@ -10,7 +10,5 @@ public class Season
     public string SeasonName { get; set; } = string.Empty;
     [Required]
     public DateTime SeasonStart { get; set; }        
-    public bool Active { get; set; } = false;
-    
-    public List<Tournament> Tournaments { get; set; } = new();   
+    public bool Active { get; set; } = false;        
 }
