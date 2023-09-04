@@ -6,61 +6,77 @@
 <br />
 <br />
 <div class="text-center">
-    <h1 class="display-4 maintitle">Ping Pong at the Forge</h1>
-    <h2 class="maintitle">@Model.greeting.Text</h2>
-    <h6> (@Model.greeting.Language)</h6>
+    <h1 class="display-4 titlemain">Ping Pong at the Forge</h1>
+    <h2 class="titlesub">@Model.greeting.Text</h2>
+    <h6 class> (@Model.greeting.Language)</h6>
 </div>
+<br />
 <hr />
-<div class="fillerspace"></div>
 <br />
-<br />
+
 
 <div class="text-center">
-    <h2>Current Season: <span class="maintitle">@Model.SeasonTitle</span> @Model.SeasonStartDate </h2>
+    <h4 class="titlesub">Current Season</h4>
+    <h5><span>@Model.SeasonTitle</span> @Model.SeasonStartDate </h5>
 </div>
 <br />
-
-@if(@Model.CurrentSeason is not null)
+@if (@Model.CurrentSeason is not null)
 {
-    <div>
-        <div class="text-center">
-            <h3>Standings</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Player</th>
-                        <th scope="col">Wins</th>
-                        <th scope="col">Losses</th>
-                        <th scope="col">Total Games</th>
-                        <th scope="col">Win %</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var player in Model.SeasonStandings)
-                    {
-                        <tr>
-                            <th scope="row">@player.Rank</th>
-                            <td>@player.UserName</td>
-                            <td>@player.Wins</td>
-                            <td>@player.Losses</td>
-                            <td>@player.TotalGames</td>
-                            <td>@player.WinPercentage</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    <br />
+    <div class="text-center">
+    @if (@Model.CurrentTeams.Count > 0)
+        {
+            <h4 class="titlesub">Current Tournament Teams</h4>
+            @for (int i = 0; i < @Model.CurrentTeams.Count(); i++)
+            {
+                <div class="row align-middle g-4">
+                    <h4 class="titlemain">@Model.CurrentTeams[i].Player1UserName &nbsp;&nbsp; | &nbsp;&nbsp;
+                        @Model.CurrentTeams[i].Player2UserName
+                    </h4>
+                </div>
+            }
+            <br />
+            <hr />
+            <br />
+        }
     </div>
+
+    <div class="text-center">
+    <h4>Standings</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">Player</th>
+                <th scope="col">Wins</th>
+                <th scope="col">Losses</th>
+                <th scope="col">Total Games</th>
+                <th scope="col">Win %</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model.SeasonStandings)
+                {
+                    <tr>
+                        <th scope="row">@player.Rank</th>
+                        <td>@player.UserName</td>
+                        <td>@player.Wins</td>
+                        <td>@player.Losses</td>
+                        <td>@player.TotalGames</td>
+                        <td>@player.WinPercentage</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <hr />
 }
 <div class="fillerspace"></div>
-<div class="fillerspace"></div>
 <br />
-<br />
-
 
 <div class="text-center">
-    <h3>All-Time Standings</h3>
+    <h4>All-Time Standings</h4>
     <table class="table table-striped">
         <thead>
             <tr>
