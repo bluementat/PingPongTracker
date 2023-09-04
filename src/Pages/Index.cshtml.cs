@@ -17,9 +17,10 @@ public class IndexModel : PageModel
     public Greeting greeting { get; set; } = new Greeting(0, string.Empty, string.Empty, string.Empty);
     public string SeasonTitle { get; set; } = string.Empty;
     public string SeasonStartDate { get; set; } = string.Empty;
-    public IEnumerable<PlayerStandingViewModel> AllTimeStandings { get; set; } = new List<PlayerStandingViewModel>();
+    public List<Team> CurrentTeams { get; set; } = new List<Team>();
     public IEnumerable<PlayerStandingViewModel> SeasonStandings { get; set; } = new List<PlayerStandingViewModel>();
-    public Season? CurrentSeason { get; set; } 
+    public IEnumerable<PlayerStandingViewModel> AllTimeStandings { get; set; } = new List<PlayerStandingViewModel>();
+    public Season? CurrentSeason { get; set; }
 
     public IndexModel(ILogger<IndexModel> logger, ApplicationDbContext Context)
     {
@@ -29,27 +30,29 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-                
+
         // Randomly select a greeting
         var greetings = Greetings.GetGreetings().ToList();
-        greeting = greetings[new Random().Next(0, greetings.Count)];        
+        greeting = greetings[new Random().Next(0, greetings.Count)];
 
         // Get all active players and create a PreSort list
         var players = _context.Players.Where(p => p.Active).ToList();
         IEnumerable<PlayerStandingViewModel> PreSort = new List<PlayerStandingViewModel>();
-        
+
         // Get and display the current season and the standings, if there is one.
         CurrentSeason = _context.Seasons.Where(s => s.Active).FirstOrDefault();
         if (CurrentSeason != null)
         {
-            SeasonTitle = CurrentSeason.SeasonName;
-            SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");            
+            CurrentTeams = _context.Teams.ToList();
 
-            foreach(var player in players)
+            SeasonTitle = CurrentSeason.SeasonName;
+            SeasonStartDate = " - " + CurrentSeason.SeasonStart.ToString("MMMM dd, yyyy");
+
+            foreach (var player in players)
             {
                 var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
                 wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
-                var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId 
+                var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
                     || g.Team1Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
                     || g.Team2Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
                     || g.Team2Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
@@ -77,11 +80,11 @@ public class IndexModel : PageModel
         // Get and display the all-time standings
         PreSort = new List<PlayerStandingViewModel>();
         players = _context.Players.ToList();
-        foreach(var player in players)
+        foreach (var player in players)
         {
             var wins = _context.Games.Where(g => g.Player1WinnerId == player.PlayerId).Count();
-            wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId).Count();            
-            var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId || g.Team1Player2Id == player.PlayerId 
+            wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId).Count();
+            var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId || g.Team1Player2Id == player.PlayerId
                 || g.Team2Player1Id == player.PlayerId || g.Team2Player2Id == player.PlayerId).Count();
             var winPercentage = totalGames == 0 ? 0 : (int)Math.Round((double)wins / totalGames * 100);
             var losses = totalGames - wins;

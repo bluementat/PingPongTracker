@@ -13,20 +13,13 @@
 
 <div class="text-center">        
     <h4 class="display-7">Here They Are!</h4>  
-    <br />  
+    <br />   
     <div class="row justify-content-md-center row-cols-md-4 g-4"> 
         @for(int i = 0; i < @Model.ProposedTeams.Count(); i++)
         {
-            <div class="col">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-header">
-                        Team @(i+1)
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">@Model.ProposedTeams[i].Player1UserName</li>
-                        <li class="list-group-item">@Model.ProposedTeams[i].Player2UserName</li>                
-                    </ul>
-                </div>
+            <div class="col">                
+                <p><strong>Team @(i+1)</strong></p>                
+                <p>@Model.ProposedTeams[i].Player1UserName & @Model.ProposedTeams[i].Player2UserName</p>
             </div>
         }
     </div>
