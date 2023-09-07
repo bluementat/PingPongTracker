@@ -72,14 +72,53 @@
                     </div>
                 </div>
             }
-        </div>
-        <br />
-        <br />
+    </div>
+    <br />
+    <br />   
+    </div>          
+
+    <hr />
+    <br />
+    <div class="text-center">
+        <h3 class="display-4">Games</h3>
+    </div>
+
+<p>
+<h4><a asp-page="#">Add Game</a></h4>
+</p>
+
+<br />
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Team 1</th>
+            <th scope="col">Score</th>
+            <th scope="col">Team 2</th>
+            <th scope="col">Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.Games)
+            {
+                <tr>
+                    @* <td><a asp-page="EditPlayer" asp-route-PlayerID=@player.PlayerId>@player.UserName</a></td> *@
+                    <td>@game.Team1Name</td>
+                    <td>@game.Team1Score</td>
+                    <td>@game.Team2Name</td>
+                    <td>@game.Team2Score</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <br />
+    <div class="text-center">
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Tournament Complete
         </button>
     </div>
 
+    
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -101,5 +140,5 @@
             </div>
         </div>
     </div>
-</div>
+    </div>   
 }

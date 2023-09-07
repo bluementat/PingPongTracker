@@ -19,6 +19,8 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         public List<EligiblePlayers> EligiblePlayersList { get; set; } = new();
         [BindProperty]
         public Season? CurrentSeason { get; set; }
+        [BindProperty]
+        public List<GameViewModel> Games { get; set; } = new List<GameViewModel>();
 
         public TournamentModel(ApplicationDbContext context, IPlayerRepository playerRepository)
         {
@@ -38,6 +40,22 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 if (_context.Teams.Count() > 0)
                 {
                     CurrentTeams = _context.Teams.ToList();
+
+                    var tourneyGames = _context.TourneyGames.ToList();
+                    foreach (var game in tourneyGames)
+                    {
+                        var team1 = $"{_playerRepository.GetUserNameById(game.Team1Player1Id)} & {_playerRepository.GetUserNameById(game.Team1Player2Id)}";
+                        var team2 = $"{_playerRepository.GetUserNameById(game.Team2Player1Id)} & {_playerRepository.GetUserNameById(game.Team2Player2Id)}";
+
+                        Games.Add(new GameViewModel
+                        {
+                            GameId = game.GameId,
+                            Team1Name = team1,
+                            Team2Name = team2,
+                            Team1Score = game.Team1Score,
+                            Team2Score = game.Team2Score
+                        });
+                    }
                 }
                 else
                 {

@@ -1,43 +1,43 @@
 ﻿@page
 @model PingPongTracker.Pages.Admin.PlayersModel
 @{
-    ViewData["Title"] = "Players";
+  ViewData["Title"] = "Players";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Players</h1>    
+  <h1 class="display-4">Players</h1>
 </div>
 
 <p>
-    <h3><a asp-page="AddPlayer" >Add New Player</a></h3>
+<h4><a asp-page="AddPlayer">Add New Player</a></h4>
 </p>
 
 <br />
 
 <table class="table table-striped">
   <thead>
-    <tr>      
+    <tr>
       <th scope="col">User Name</th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
-      <th scope="col">Eligible</th>      
+      <th scope="col">Eligible</th>
       <th scope="col">Active</th>
     </tr>
   </thead>
   <tbody>
-    @foreach(var player in Model.Players)
+    @foreach (var player in Model.Players)
     {
-        <tr>                    
-          <td><a asp-page="EditPlayer" asp-route-PlayerID=@player.PlayerId >@player.UserName</a></td>
-          <td>@player.FirstName</td>
-          <td>@player.LastName</td>
-          <td>@player.Eligible</td>
-          <td>@player.Active</td>
-        </tr>    
+      <tr>
+        <td><a asp-page="EditPlayer" asp-route-PlayerID=@player.PlayerId>@player.UserName</a></td>
+        <td>@player.FirstName</td>
+        <td>@player.LastName</td>
+        <td>@player.Eligible</td>
+        <td>@player.Active</td>
+      </tr>
     }
   </tbody>
 </table>
 <br />
 <p>
-    There are @Model.Players.Count players.
+  There are @Model.Players.Count players.
 </p

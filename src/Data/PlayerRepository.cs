@@ -27,6 +27,11 @@ public class PlayerRepository : IPlayerRepository
         return _dbContext.Players.FirstOrDefault(p => p.UserName == username) ?? new Player();
     }
 
+    public string GetUserNameById(Guid id)
+    {
+        return _dbContext.Players.Find(id)?.UserName ?? "";
+    }
+
     public bool PlayerUserNameChanged(Player player)
     {
         var playerFromDb = _dbContext.Players.Find(player.PlayerId) ?? new Player();
@@ -35,16 +40,16 @@ public class PlayerRepository : IPlayerRepository
 
     public IEnumerable<Player> GetActivePlayers()
     {
-        return  _dbContext.Players.Where(p => p.Active);
+        return _dbContext.Players.Where(p => p.Active);
     }
 
     public bool GoodUserNameChange(Player player)
-    {        
-        var playerFromDb = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.PlayerId == player.PlayerId) ?? new Player();                       
-        if(playerFromDb.UserName != player.UserName)
+    {
+        var playerFromDb = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.PlayerId == player.PlayerId) ?? new Player();
+        if (playerFromDb.UserName != player.UserName)
         {
             return _dbContext.Players.FirstOrDefault(p => p.UserName == player.UserName) is null;
-        }        
+        }
         return true;
     }
 
@@ -67,6 +72,6 @@ public class PlayerRepository : IPlayerRepository
         {
             _dbContext.Players.Remove(player);
             await _dbContext.SaveChangesAsync();
-        }        
+        }
     }
 }
