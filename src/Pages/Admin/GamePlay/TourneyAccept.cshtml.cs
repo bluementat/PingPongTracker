@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Extensions;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
@@ -13,27 +15,28 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         public List<Team> ProposedTeams { get; set; } = new List<Team>();        
         
         public TourneyAcceptModel(ApplicationDbContext context)
-        {
-            _context = context;   
-            ProposedTeams = _context.Teams.ToList();         
+        {            
+            _context = context;            
         }
         
         public void OnGet(Guid id)
         {
-            
+            ProposedTeams = HttpContext.Session.Get<List<Team>>("CandidateTeams");
         } 
 
-        public IActionResult OnPostAcceptTeams()
+        public async Task<IActionResult> OnPostAcceptTeams()
         {
+            ProposedTeams = HttpContext.Session.Get<List<Team>>("CandidateTeams");
+            _context.Teams.AddRange(ProposedTeams);
+            await _context.SaveChangesAsync();
+
             return RedirectToPage("Tournament");
         }    
 
-        public async Task<IActionResult> OnPostNewTeams()
+        public IActionResult OnPostNewTeams()
         {
             // Delete the teams
-            var TheTeams = _context.Teams.ToList();
-            _context.Teams.RemoveRange(TheTeams);
-            await _context.SaveChangesAsync();
+            HttpContext.Session.Set<List<Team>>("CandidateTeams", new List<Team>());
             
             return RedirectToPage("Tournament");
         }   

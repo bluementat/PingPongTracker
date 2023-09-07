@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Extensions;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
@@ -48,18 +49,19 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             }                                                                    
         }
 
-        public async Task<IActionResult> OnPostMakeTeams()
+        public IActionResult OnPostMakeTeams()
         {            
-            // Add Eligible Players to the Torunament in Random Order
+            // Randomly add Eligible Players teams
             var eligiblePlayers = EligiblePlayersList.Where(p => p.Eligible == true).ToList();
             var random = new Random();
             var shuffledPlayers = eligiblePlayers.OrderBy(p => random.Next()).ToList();
+            var CandidateTeams = new List<Team>();
 
             if(shuffledPlayers.Count % 2 != 0)
             {                
                 for( int i = 0; i < shuffledPlayers.Count-1; i += 2)
                 {
-                   _context.Teams.Add(new Team 
+                   CandidateTeams.Add(new Team 
                    { 
                         Player1Id = shuffledPlayers[i].PlayerId, 
                         Player1UserName = shuffledPlayers[i].UserName,
@@ -67,7 +69,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                         Player2UserName = shuffledPlayers[i+1].UserName 
                     });                    
                 }
-                _context.Teams.Add(new Team 
+                CandidateTeams.Add(new Team 
                 { 
                     Player1Id = Guid.Empty,
                     Player1UserName = "ODD PERSON OUT",
@@ -79,7 +81,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             {
                 for( int i = 0; i < shuffledPlayers.Count; i += 2)
                 {
-                   _context.Teams.Add(new Team 
+                   CandidateTeams.Add(new Team 
                    { 
                         Player1Id = shuffledPlayers[i].PlayerId, 
                         Player1UserName = shuffledPlayers[i].UserName,
@@ -89,7 +91,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 }
             }
             
-            await _context.SaveChangesAsync();
+            HttpContext.Session.Set<List<Team>>("CandidateTeams", CandidateTeams);            
             return RedirectToPage("/Admin/GamePlay/TourneyAccept");
         }
 
@@ -98,6 +100,11 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             _context.Teams.RemoveRange(_context.Teams);
 
             await _context.SaveChangesAsync();
+
+            foreach(var player in _activePlayers)
+            {
+                EligiblePlayersList.Add(new EligiblePlayers(player.PlayerId, player.UserName, player.Eligible));
+            }
         }
     }
 }
