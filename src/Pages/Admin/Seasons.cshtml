@@ -5,11 +5,11 @@
 }
 
 <div class="text-center">
-    <h3 class="display-4">Seasons</h3>    
+    <h3 class="display-4">Seasons</h3>
 </div>
 
 <p>
-    <h3><a asp-page="AddSeason" >Create a New Season</a></h3>
+<h4><a asp-page="AddSeason">Create a New Season</a></h4>
 </p>
 
 <br />
@@ -18,7 +18,7 @@
     <thead>
         <tr>
             <th scope="col">Season</th>
-            <th scope="col">Start Date</th>            
+            <th scope="col">Start Date</th>
             <th scope="col">Active</th>
         </tr>
     </thead>
@@ -26,8 +26,8 @@
         @foreach (var season in Model.Seasons)
         {
             <tr>
-                <td><a asp-page="EditSeason" asp-route-SeasonID=@season.SeasonId >@season.SeasonName</a></td>
-                <td>@season.SeasonStart</td>                
+                <td><a asp-page="EditSeason" asp-route-SeasonID=@season.SeasonId>@season.SeasonName</a></td>
+                <td>@season.SeasonStart</td>
                 <td>@season.Active</td>
             </tr>
         }
