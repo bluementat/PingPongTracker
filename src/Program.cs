@@ -17,6 +17,14 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddTransient<IPlayerRepository>(provider => new PlayerRepository(provider.GetRequiredService<ApplicationDbContext>()));
 builder.Services.AddTransient<ISeasonRepository>(provider => new SeasonRepository(provider.GetRequiredService<ApplicationDbContext>()));
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -32,6 +40,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
