@@ -5,75 +5,101 @@
 }
 
 <div class="text-center">
-    <h3 class="display-4">Tournament</h3>    
+    <h3 class="display-4">Tournament</h3>
 </div>
 
 <br />
 <br />
 
-@if(@Model.CurrentSeason == null)
+@if (@Model.CurrentSeason == null)
 {
     <div class="text-center">
-        <h3 class="display-4">No Season</h3>
-        <p>There is no current season. Please create a season first.</p>
-        <a class="btn btn-primary" asp-page="/Admin/Seasons">Go To Seasons Page</a>
-    </div>
+    <h3 class="display-4">No Season</h3>
+    <p>There is no current season. Please create a season first.</p>
+    <a class="btn btn-primary" asp-page="/Admin/Seasons">Go To Seasons Page</a>
+</div>
 }
 
-@if(@Model.CurrentSeason is not null && @Model.CurrentTeams.Count() == 0)
+@if (@Model.CurrentSeason is not null && @Model.CurrentTeams.Count() == 0)
 {
     <div class="text-center">
     <h4 class="display-6">No Active Tournament or Teams</h4>
-    <h4>Please select players to create a new tournament</h4>   
+    <h4>Please select players to create a new tournament</h4>
     <br />
     <br />
     <form class="p-2" method="post">
-        @for(int i = 0; i < @Model.EligiblePlayersList.Count(); i++)
-        {                
-            <div class="row justify-content-md-center">
-                <div>
-					<input type="hidden" asp-for="@Model.EligiblePlayersList[i].PlayerId" />
-				</div>
-                <div class="col-2">                    
-                    <h4><input type="text" class="form-control form-control-sm" asp-for="@Model.EligiblePlayersList[i].UserName" readonly></h4>
+        @for (int i = 0; i < @Model.EligiblePlayersList.Count(); i++)
+            {
+                <div class="row justify-content-md-center">
+                    <div>
+                        <input type="hidden" asp-for="@Model.EligiblePlayersList[i].PlayerId" />
+                    </div>
+                    <div class="col-2">
+                        <h4><input type="text" class="form-control form-control-sm"
+                                asp-for="@Model.EligiblePlayersList[i].UserName" readonly></h4>
+                    </div>
+                    <div class="col-1">
+                        <input type="checkbox" class="form-control form-control-sm form-check-input"
+                            asp-for="@Model.EligiblePlayersList[i].Eligible">
+                    </div>
                 </div>
-                <div class="col-1">                    
-                    <input type="checkbox" class="form-control form-control-sm form-check-input" asp-for="@Model.EligiblePlayersList[i].Eligible" >
-                </div>
-            </div>        
-        }
-        <div class="fillerspace"></div>
-        <button type="submit" class="btn btn-lg btn-success" asp-page-handler="MakeTeams">Randomize and Create Teams</button>
-    </form>
-</div>
+            }
+            <div class="fillerspace"></div>
+            <button type="submit" class="btn btn-lg btn-success" asp-page-handler="MakeTeams">Randomize and Create
+                Teams</button>
+        </form>
+    </div>
 }
 
 
-@if(@Model.CurrentSeason is not null && @Model.CurrentTeams.Count() != 0)
+@if (@Model.CurrentSeason is not null && @Model.CurrentTeams.Count() != 0)
 {
-    <div class="text-center">        
-        <h4 class="display-7">Tournament Teams</h4>  
-        <br />  
-        <div class="row justify-content-md-center row-cols-md-4 g-4"> 
-            @for(int i = 0; i < @Model.CurrentTeams.Count(); i++)
+    <div class="text-center">
+    <h4 class="display-7">Tournament Teams</h4>
+    <br />
+    <div class="row justify-content-md-center row-cols-md-4 g-4">
+        @for (int i = 0; i < @Model.CurrentTeams.Count(); i++)
             {
                 <div class="col">
                     <div class="card" style="width: 18rem;">
                         <div class="card-header">
-                            Team @(i+1)
+                            Team @(i + 1)
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">@Model.CurrentTeams[i].Player1UserName</li>
-                            <li class="list-group-item">@Model.CurrentTeams[i].Player2UserName</li>                
+                            <li class="list-group-item">@Model.CurrentTeams[i].Player2UserName</li>
                         </ul>
                     </div>
                 </div>
             }
         </div>
-        <br />  
         <br />
-        <form class="p-2" method="post" >
-            <button type="submit" class="btn btn-lg btn-danger" asp-page-handler="TourneyComplete">Complete Tournament</button>
-        </form>  
+        <br />
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Tournament Complete
+        </button>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Completing The Tournament</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                This will complete the tournament, update the season standings,
+                and erase the current teams. Are you sure you want to do this?
+            </div>
+            <div class="modal-footer">
+                <form class="p-2" method="post">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Never Mind</button>
+                    <button type="submit" class="btn btn-danger" asp-page-handler="TourneyComplete">Complete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 }
