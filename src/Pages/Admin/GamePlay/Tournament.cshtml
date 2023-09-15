@@ -63,7 +63,7 @@
                 <div class="col">
                     <div class="card" style="width: 18rem;">
                         <div class="card-header">
-                            Team @(i + 1)
+                            <a asp-page="EditTeam" asp-route-TeamID="@Model.CurrentTeams[i].TeamID">Team @(i + 1)</a>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">@Model.CurrentTeams[i].Player1UserName</li>
@@ -72,22 +72,22 @@
                     </div>
                 </div>
             }
+        </div>
+        <br />
+        <br />
     </div>
-    <br />
-    <br />   
-    </div>          
 
     <hr />
     <br />
     <div class="text-center">
-        <h3 class="display-4">Games</h3>
-    </div>
+    <h3 class="display-4">Games</h3>
+</div>
 
-<p>
+    <p>
 <h4><a asp-page="#">Add Game</a></h4>
 </p>
 
-<br />
+    <br />
     <table class="table table-striped">
     <thead>
         <tr>
@@ -113,12 +113,12 @@
 
     <br />
     <div class="text-center">
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Tournament Complete
-        </button>
-    </div>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Tournament Complete
+    </button>
+</div>
 
-    
+
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -140,5 +140,5 @@
             </div>
         </div>
     </div>
-    </div>   
+</div>
 }
