@@ -25,6 +25,38 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             TeamSelectList = GetTeamOptions();
         }
 
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if(!ModelState.IsValid)
+            {
+                return Page();
+            }   
+
+            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
+            var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
+            var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
+            
+            var NewGame = new Game
+            {                
+                Team1Player1Id = Team1.Player1Id,
+                Team1Player2Id = Team1.Player2Id,
+                Team2Player1Id = Team2.Player1Id,
+                Team2Player2Id = Team2.Player2Id,
+                Team1Score = GameToAdd.Team1Score,
+                Team2Score = GameToAdd.Team2Score,
+                Player1WinnerId = GameToAdd.Team1Score > GameToAdd.Team2Score ? Team1.Player1Id : Team2.Player1Id,
+                Player2WinnerId = GameToAdd.Team1Score > GameToAdd.Team2Score ? Team1.Player2Id : Team2.Player2Id,
+                MatchupDate = DateTime.Now,                
+                SeasonId = CurrentSeason.SeasonId
+            };
+
+            _context.TourneyGames.Add(NewGame);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("/Admin/GamePlay/Tournament");                        
+        }
+
+
+
 
         private SelectList GetTeamOptions()
         {
@@ -34,12 +66,12 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             {
                 TeamOptions.Add(new TeamOptionViewModel
                 {
-                    TeamID = team.TeamID,
-                    TeamName = $"{team.Player1UserName} and {team.Player2UserName}"
+                    Value = team.TeamID,
+                    Text = $"{team.Player1UserName} and {team.Player2UserName}"
                 });
             }
 
-            return new SelectList(TeamOptions, "TeamID", "TeamName");
+            return new SelectList(TeamOptions, "Value", "Text");
         }
     }
 }

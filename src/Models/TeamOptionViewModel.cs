@@ -2,6 +2,6 @@
 
 public class TeamOptionViewModel
 {
-    public int TeamID { get; set; }
-    public string TeamName { get; set; } = string.Empty;
+    public int Value { get; set; }
+    public string Text { get; set; } = string.Empty;
 }
