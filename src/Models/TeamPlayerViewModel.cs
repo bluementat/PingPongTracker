@@ -1,4 +1,4 @@
-﻿namespace PingPongTracker;
+﻿namespace PingPongTracker.Models;
 
 public class TeamPlayerViewModel
 {
