@@ -27,17 +27,17 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return Page();
-            }   
+            }
 
             var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
             var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
             var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
-            
-            var NewGame = new Game
-            {                
+
+            var NewGame = new TourneyGame
+            {
                 Team1Player1Id = Team1.Player1Id,
                 Team1Player2Id = Team1.Player2Id,
                 Team2Player1Id = Team2.Player1Id,
@@ -46,13 +46,13 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 Team2Score = GameToAdd.Team2Score,
                 Player1WinnerId = GameToAdd.Team1Score > GameToAdd.Team2Score ? Team1.Player1Id : Team2.Player1Id,
                 Player2WinnerId = GameToAdd.Team1Score > GameToAdd.Team2Score ? Team1.Player2Id : Team2.Player2Id,
-                MatchupDate = DateTime.Now,                
+                MatchupDate = DateTime.Now,
                 SeasonId = CurrentSeason.SeasonId
             };
 
             _context.TourneyGames.Add(NewGame);
             await _context.SaveChangesAsync();
-            return RedirectToPage("/Admin/GamePlay/Tournament");                        
+            return RedirectToPage("/Admin/GamePlay/Tournament");
         }
 
 

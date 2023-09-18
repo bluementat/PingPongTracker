@@ -68,7 +68,7 @@ public class IndexModel : PageModel
                     WinPercentage = winPercentage
                 });
 
-                SeasonStandings = PreSort.OrderBy(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+                SeasonStandings = PreSort.OrderByDescending(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
             }
         }
         else
@@ -100,7 +100,7 @@ public class IndexModel : PageModel
             });
         }
 
-        AllTimeStandings = PreSort.OrderBy(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+        AllTimeStandings = PreSort.OrderByDescending(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
 
     }
 }
