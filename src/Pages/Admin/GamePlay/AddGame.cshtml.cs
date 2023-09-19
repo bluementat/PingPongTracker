@@ -33,13 +33,17 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             }
 
             var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
+            var TeamName1 = GamePlayUtilities.CreateTeamName(Team1.Player1UserName, Team1.Player2UserName);
             var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
+            var TeamName2 = GamePlayUtilities.CreateTeamName(Team2.Player1UserName, Team2.Player2UserName);
             var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
 
             var NewGame = new TourneyGame
             {
+                Team1Name = TeamName1,
                 Team1Player1Id = Team1.Player1Id,
                 Team1Player2Id = Team1.Player2Id,
+                Team2Name = TeamName2,
                 Team2Player1Id = Team2.Player1Id,
                 Team2Player2Id = Team2.Player2Id,
                 Team1Score = GameToAdd.Team1Score,
@@ -67,7 +71,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 TeamOptions.Add(new TeamOptionViewModel
                 {
                     Value = team.TeamID,
-                    Text = $"{team.Player1UserName} and {team.Player2UserName}"
+                    Text = GamePlayUtilities.CreateTeamName(team.Player1UserName, team.Player2UserName)
                 });
             }
 
