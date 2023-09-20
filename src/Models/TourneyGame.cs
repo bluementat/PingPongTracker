@@ -7,9 +7,13 @@ public class TourneyGame
     [Key]
     public Guid GameId { get; set; }
     [Required]
+    public string Team1Name { get; set; } = "";
+    [Required]
     public Guid Team1Player1Id { get; set; }
     [Required]
     public Guid Team1Player2Id { get; set; }
+    [Required]
+    public string Team2Name { get; set; } = "";
     [Required]
     public Guid Team2Player1Id { get; set; }
     [Required]

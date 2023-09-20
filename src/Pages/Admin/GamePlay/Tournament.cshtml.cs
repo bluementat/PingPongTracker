@@ -43,15 +43,12 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
                     var tourneyGames = _context.TourneyGames.ToList();
                     foreach (var game in tourneyGames)
-                    {                        
-                        var team1 = $"{_playerRepository.GetUserNameById(game.Team1Player1Id)} & {_playerRepository.GetUserNameById(game.Team1Player2Id)}";
-                        var team2 = $"{_playerRepository.GetUserNameById(game.Team2Player1Id)} & {_playerRepository.GetUserNameById(game.Team2Player2Id)}";
-
+                    {
                         Games.Add(new GameViewModel
                         {
                             GameId = game.GameId,
-                            Team1Name = team1,
-                            Team2Name = team2,
+                            Team1Name = game.Team1Name,
+                            Team2Name = game.Team2Name,
                             Team1Score = game.Team1Score,
                             Team2Score = game.Team2Score
                         });

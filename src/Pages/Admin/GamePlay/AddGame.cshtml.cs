@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Versioning;
 using PingPongTracker.Data;
 using PingPongTracker.Models;
 
@@ -32,14 +33,18 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 return Page();
             }
 
-            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
+            TeamSelectList = GetTeamOptions();
+
+            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();                    
             var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
             var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
 
             var NewGame = new TourneyGame
             {
+                Team1Name = GetTeamOptions().First(t => t.Value == GameToAdd.Team1Id.ToString()).Text,
                 Team1Player1Id = Team1.Player1Id,
                 Team1Player2Id = Team1.Player2Id,
+                Team2Name = GetTeamOptions().First(t => t.Value == GameToAdd.Team2Id.ToString()).Text,
                 Team2Player1Id = Team2.Player1Id,
                 Team2Player2Id = Team2.Player2Id,
                 Team1Score = GameToAdd.Team1Score,
@@ -67,7 +72,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 TeamOptions.Add(new TeamOptionViewModel
                 {
                     Value = team.TeamID,
-                    Text = $"{team.Player1UserName} and {team.Player2UserName}"
+                    Text = GamePlayUtilities.CreateTeamName(team.Player1UserName, team.Player2UserName)
                 });
             }
 
