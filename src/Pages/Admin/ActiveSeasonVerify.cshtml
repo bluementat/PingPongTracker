@@ -1,0 +1,37 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.ActiveSeasonVerifyModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Verify Activating a New Season";
+}
+
+<div class="text-center">
+    <h4 class="display-5">Verify Activating a New Season</h4>
+</div>
+
+<div class="fillerspace"></div>
+
+<div class="text-center">
+    <p>There is a season currently active with a Torunament in play.</p>
+    <p>Setting a new season to "Active" will <strong>remove any games and teams</strong> in the tournament and
+        and close the currently active season.
+    </p>
+    <br />
+    <br />
+    <p>Would you rather make this new season "Inactive"?</p>
+</div>
+
+<div class="text-center">
+    <form class="p-2" method="post">
+        <div>
+            <input type="hidden" asp-for="@Model.SeasonToUpdate.SeasonId" />
+            <input type="hidden" asp-for="@Model.SeasonToUpdate.SeasonName" />
+            <input type="hidden" asp-for="@Model.SeasonToUpdate.SeasonStart" />
+            <input type="hidden" asp-for="@Model.SeasonToUpdate.Active" />
+        </div>
+        <button type="submit" class="btn btn-success" asp-page-handler="NewSeasonInactive">Make the New Season
+            Inactve</button>
+        <button type="submit" class="btn btn-danger" asp-page-handler="ActivateNewSeason">Destroy the Torunament -
+            Activate this season!</button>
+    </form>
+</div>

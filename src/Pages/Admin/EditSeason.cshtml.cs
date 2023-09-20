@@ -9,16 +9,18 @@ namespace PingPongTracker.Pages.Admin
     [Authorize(Roles = "Admin")]
     public class EditSeasonModel : PageModel
     {
-        private readonly ISeasonRepository _repo;        
-        
+        private readonly ApplicationDbContext _context;
+        private readonly ISeasonRepository _repo;
+
         [BindProperty]
         public Season SeasonToEdit { get; set; } = new();
 
-        public EditSeasonModel(ISeasonRepository repo)
+        public EditSeasonModel(ApplicationDbContext context, ISeasonRepository repo)
         {
-            _repo = repo;            
+            _context = context;
+            _repo = repo;
         }
-        
+
         public async Task OnGet(Guid SeasonID)
         {
             SeasonToEdit = await _repo.GetSeasonById(SeasonID);
@@ -29,6 +31,16 @@ namespace PingPongTracker.Pages.Admin
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            // Are there any Teams? If there are, this indicates that a Season has already been created and that there is
+            // an active torunament. Check if the SeasonToAdd is set to Active.
+            if (SeasonToEdit.Active && _context.Teams.Any())
+            {
+                SeasonToEdit.Active = false;
+                await _repo.UpdateSeason(SeasonToEdit);
+
+                return RedirectToPage("ActiveSeasonVerify", new { SeasonId = SeasonToEdit.SeasonId });
             }
 
             await _repo.UpdateSeason(SeasonToEdit);

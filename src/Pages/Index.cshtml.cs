@@ -69,6 +69,11 @@ public class IndexModel : PageModel
                 });
 
                 SeasonStandings = PreSort.OrderByDescending(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+
+                for (int i = 0; i < SeasonStandings.Count(); i++)
+                {
+                    SeasonStandings.ElementAt(i).Rank = i + 1;
+                }
             }
         }
         else
@@ -101,6 +106,11 @@ public class IndexModel : PageModel
         }
 
         AllTimeStandings = PreSort.OrderByDescending(p => p.WinPercentage).ThenBy(p => p.Wins).ThenBy(p => p.Losses).ToList();
+
+        for (int i = 0; i < AllTimeStandings.Count(); i++)
+        {
+            AllTimeStandings.ElementAt(i).Rank = i + 1;
+        }
 
     }
 }
