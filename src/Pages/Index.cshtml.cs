@@ -56,7 +56,7 @@ public class IndexModel : PageModel
                     || g.Team1Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
                     || g.Team2Player1Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId
                     || g.Team2Player2Id == player.PlayerId && g.SeasonId == CurrentSeason.SeasonId).Count();
-                var winPercentage = totalGames == 0 ? 0 : (int)Math.Round((double)wins / totalGames * 100);
+                var winPercentage = totalGames == 0 ? 0 : Math.Round((double)wins / totalGames * 100, 3);
                 var losses = totalGames - wins;
                 PreSort = PreSort.Append(new PlayerStandingViewModel
                 {
@@ -86,7 +86,7 @@ public class IndexModel : PageModel
             wins += _context.Games.Where(g => g.Player2WinnerId == player.PlayerId).Count();
             var totalGames = _context.Games.Where(g => g.Team1Player1Id == player.PlayerId || g.Team1Player2Id == player.PlayerId
                 || g.Team2Player1Id == player.PlayerId || g.Team2Player2Id == player.PlayerId).Count();
-            var winPercentage = totalGames == 0 ? 0 : (int)Math.Round((double)wins / totalGames * 100);
+            var winPercentage = totalGames == 0 ? 0 : Math.Round((double)wins / totalGames * 100, 3);
             var losses = totalGames - wins;
 
             PreSort = PreSort.Append(new PlayerStandingViewModel

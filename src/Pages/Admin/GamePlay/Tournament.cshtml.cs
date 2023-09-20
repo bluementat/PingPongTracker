@@ -112,8 +112,29 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         public async Task<IActionResult> OnPostTourneyComplete()
         {
+            
+            foreach(var TounamentGame in _context.TourneyGames)
+            {
+                _context.Games.Add(new Game()
+                {                    
+                    Team1Name = TounamentGame.Team1Name,
+                    Team1Player1Id = TounamentGame.Team1Player1Id,
+                    Team1Player2Id = TounamentGame.Team1Player2Id,
+                    Team2Name = TounamentGame.Team2Name,
+                    Team2Player1Id = TounamentGame.Team2Player1Id,
+                    Team2Player2Id = TounamentGame.Team2Player2Id,
+                    Team1Score = TounamentGame.Team1Score,
+                    Team2Score = TounamentGame.Team2Score,
+                    MatchupDate = TounamentGame.MatchupDate,
+                    Player1WinnerId = TounamentGame.Player1WinnerId,
+                    Player2WinnerId = TounamentGame.Player2WinnerId,
+                    SeasonId = TounamentGame.SeasonId
+                });
+                _context.TourneyGames.Remove(TounamentGame);
+            }
+            
             _context.Teams.RemoveRange(_context.Teams);
-
+            
             await _context.SaveChangesAsync();
 
             foreach (var player in _activePlayers)

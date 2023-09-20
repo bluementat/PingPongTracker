@@ -7,6 +7,6 @@ public class PlayerStandingViewModel
     public int Wins { get; set; }
     public int Losses { get; set; }
     public int TotalGames { get; set; }
-    public int WinPercentage { get; set; }
+    public double WinPercentage { get; set; }
    
 }
