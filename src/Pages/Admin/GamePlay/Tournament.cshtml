@@ -30,15 +30,15 @@
     <form class="p-2" method="post">
         @for (int i = 0; i < @Model.EligiblePlayersList.Count(); i++)
             {
+                <div>
+                    <input type="hidden" asp-for="@Model.EligiblePlayersList[i].PlayerId" />
+                </div>
                 <div class="row justify-content-md-center">
-                    <div>
-                        <input type="hidden" asp-for="@Model.EligiblePlayersList[i].PlayerId" />
-                    </div>
-                    <div class="col-2">
+                    <div class="col-10 col-md-6">
                         <h4><input type="text" class="form-control form-control-sm"
                                 asp-for="@Model.EligiblePlayersList[i].UserName" readonly></h4>
                     </div>
-                    <div class="col-1">
+                    <div class="col-2 col-md-1">
                         <input type="checkbox" class="form-control form-control-sm form-check-input"
                             asp-for="@Model.EligiblePlayersList[i].Eligible">
                     </div>
@@ -57,7 +57,7 @@
     <div class="text-center">
     <h4 class="display-7">Tournament Teams</h4>
     <br />
-    <div class="row justify-content-md-center row-cols-md-4 g-4">
+    <div class="row justify-content-md-center row-cols-md-4 row-cols-xs-1 g-4">
         @for (int i = 0; i < @Model.CurrentTeams.Count(); i++)
             {
                 <div class="col">
@@ -100,17 +100,17 @@
         </tr>
     </thead>
     <tbody>
-        @for(int i = 0; i < @Model.Games.Count(); i++)
+        @for (int i = 0; i < @Model.Games.Count(); i++)
             {
                 <tr>
-                    <td><a asp-page="EditGame" asp-route-GameId=@Model.Games[i].GameId>@(i+1)</a></td>
+                    <td><a asp-page="EditGame" asp-route-GameId=@Model.Games[i].GameId>@(i + 1)</a></td>
                     <td>@Model.Games[i].Team1Name</td>
                     <td>@Model.Games[i].Team1Score</td>
                     <td>@Model.Games[i].Team2Name</td>
                     <td>@Model.Games[i].Team2Score</td>
                     <td><a asp-page="DeleteGame" asp-route-GameId=@Model.Games[i].GameId><strong>X</strong></a></td>
                 </tr>
-            }            
+            }
         </tbody>
     </table>
 
