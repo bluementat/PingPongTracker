@@ -96,6 +96,7 @@
             <th scope="col">Score</th>
             <th scope="col">Team 2</th>
             <th scope="col">Score</th>
+            <th scope="col">DELETE</th>
         </tr>
     </thead>
     <tbody>
@@ -107,6 +108,7 @@
                     <td>@Model.Games[i].Team1Score</td>
                     <td>@Model.Games[i].Team2Name</td>
                     <td>@Model.Games[i].Team2Score</td>
+                    <td><a asp-page="DeleteGame" asp-route-GameId=@Model.Games[i].GameId><strong>X</strong></a></td>
                 </tr>
             }            
         </tbody>
