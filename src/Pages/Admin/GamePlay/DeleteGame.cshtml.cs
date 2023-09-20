@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
@@ -5,12 +6,13 @@ using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
+    [Authorize(Roles = "Admin")]
     public class DeleteGameModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
         [BindProperty]
-        public GameViewModel GameToDelete { get; set; } = new GameViewModel();       
+        public GameViewModel GameToDelete { get; set; } = new GameViewModel();
 
         public DeleteGameModel(ApplicationDbContext context)
         {
@@ -36,7 +38,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 return Page();
             }
 
-            var Game = _context.TourneyGames.Find(GameToDelete.GameId) ?? new TourneyGame();            
+            var Game = _context.TourneyGames.Find(GameToDelete.GameId) ?? new TourneyGame();
 
             _context.TourneyGames.Remove(Game);
             await _context.SaveChangesAsync();

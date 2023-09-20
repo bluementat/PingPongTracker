@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,7 @@ using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
+    [Authorize(Roles = "Admin")]
     public class AddGameModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -35,7 +37,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
             TeamSelectList = GetTeamOptions();
 
-            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();                    
+            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
             var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
             var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
 

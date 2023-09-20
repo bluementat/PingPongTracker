@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,12 +7,13 @@ using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
+    [Authorize(Roles = "Admin")]
     public class EditGameModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
         [BindProperty]
-        public GameViewModel GameToEdit { get; set; } = new GameViewModel();       
+        public GameViewModel GameToEdit { get; set; } = new GameViewModel();
 
         public EditGameModel(ApplicationDbContext context)
         {
@@ -47,6 +49,6 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             await _context.SaveChangesAsync();
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
-       
+
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
@@ -6,6 +7,8 @@ using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
+
+    [Authorize(Roles = "Admin")]
     public class TournamentModel : PageModel
     {
         private readonly ApplicationDbContext _context;
@@ -112,11 +115,11 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         public async Task<IActionResult> OnPostTourneyComplete()
         {
-            
-            foreach(var TounamentGame in _context.TourneyGames)
+
+            foreach (var TounamentGame in _context.TourneyGames)
             {
                 _context.Games.Add(new Game()
-                {                    
+                {
                     Team1Name = TounamentGame.Team1Name,
                     Team1Player1Id = TounamentGame.Team1Player1Id,
                     Team1Player2Id = TounamentGame.Team1Player2Id,
@@ -132,9 +135,9 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 });
                 _context.TourneyGames.Remove(TounamentGame);
             }
-            
+
             _context.Teams.RemoveRange(_context.Teams);
-            
+
             await _context.SaveChangesAsync();
 
             foreach (var player in _activePlayers)
