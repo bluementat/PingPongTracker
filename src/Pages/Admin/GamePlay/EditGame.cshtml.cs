@@ -29,7 +29,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             GameToEdit.Team2Score = Game.Team2Score;
         }
 
-         public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
