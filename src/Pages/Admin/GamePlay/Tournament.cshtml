@@ -91,6 +91,7 @@
     <table class="table table-striped">
     <thead>
         <tr>
+            <th scope="col">Game #</th>
             <th scope="col">Team 1</th>
             <th scope="col">Score</th>
             <th scope="col">Team 2</th>
@@ -98,16 +99,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var game in Model.Games)
+        @for(int i = 0; i < @Model.Games.Count(); i++)
             {
                 <tr>
-                    @* <td><a asp-page="EditPlayer" asp-route-PlayerID=@player.PlayerId>@player.UserName</a></td> *@
-                    <td>@game.Team1Name</td>
-                    <td>@game.Team1Score</td>
-                    <td>@game.Team2Name</td>
-                    <td>@game.Team2Score</td>
+                    <td><a asp-page="EditGame" asp-route-GameId=@Model.Games[i].GameId>@(i+1)</a></td>
+                    <td>@Model.Games[i].Team1Name</td>
+                    <td>@Model.Games[i].Team1Score</td>
+                    <td>@Model.Games[i].Team2Name</td>
+                    <td>@Model.Games[i].Team2Score</td>
                 </tr>
-            }
+            }            
         </tbody>
     </table>
 

@@ -18,9 +18,8 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    <label for="Team1Id" class="form-label col-form-label-sm">Team 1</label>
-                    <select class="form-control form-control-sm" asp-for="GameToEdit.Team1Id"
-                        asp-items="Model.TeamSelectList"></select>
+                    <label for="Team1Name" class="form-label col-form-label-sm">Team 1</label>
+                    <input type="text" class="form-control form-control-sm" asp-for="GameToEdit.Team1Name" readonly/>
                 </div>
                 <div class="col-md-3">
                     <label for="Team1Score" class="form-label col-form-label-sm">Score</label>
@@ -29,9 +28,8 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    <label for="Team2Id" class="form-label col-form-label-sm">Team 2</label>
-                    <select class="form-control form-control-sm" asp-for="GameToEdit.Team2Id"
-                        asp-items="Model.TeamSelectList"></select>
+                    <label for="Team2Name" class="form-label col-form-label-sm">Team 2</label>
+                    <input type="text" class="form-control form-control-sm" asp-for="GameToEdit.Team2Name" readonly/>
                 </div>
                 <div class="col-md-3">
                     <label for="Team2Score" class="form-label col-form-label-sm">Score</label>
@@ -39,7 +37,7 @@
                 </div>
             </div>
             <br />
-            <button type="submit" class="btn btn-lg btn-primary">Add Game</button>
+            <button type="submit" class="btn btn-lg btn-primary">Edit Game</button>
         </form>
     </div>
 </div>
