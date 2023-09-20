@@ -17,23 +17,23 @@
                 <input type="hidden" asp-for="GameToAdd.GameId" />
             </div>
             <div class="row">
-                <div class="col-md-9">
-                    <label for="Team1Id" class="form-label col-form-label-sm">Team 1</label>
+                <div class="col-md-9 col-9">
+                    <label for="Team1Id" class="form-label col-form-label-sm">Visitors</label>
                     <select class="form-control form-control-sm" asp-for="GameToAdd.Team1Id"
                         asp-items="Model.TeamSelectList"></select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-3">
                     <label for="Team1Score" class="form-label col-form-label-sm">Score</label>
                     <input type="number" class="form-control form-control-sm" asp-for="GameToAdd.Team1Score" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9">
-                    <label for="Team2Id" class="form-label col-form-label-sm">Team 2</label>
+                <div class="col-md-9 col-9">
+                    <label for="Team2Id" class="form-label col-form-label-sm">Home</label>
                     <select class="form-control form-control-sm" asp-for="GameToAdd.Team2Id"
                         asp-items="Model.TeamSelectList"></select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-3">
                     <label for="Team2Score" class="form-label col-form-label-sm">Score</label>
                     <input type="number" class="form-control form-control-sm" asp-for="GameToAdd.Team2Score" />
                 </div>
