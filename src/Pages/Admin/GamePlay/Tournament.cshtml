@@ -60,7 +60,7 @@
     <div class="row justify-content-md-center row-cols-md-4 row-cols-xs-1 g-4">
         @for (int i = 0; i < @Model.CurrentTeams.Count(); i++)
             {
-                <div class="col">
+                <div class="col" align="center">
                     <div class="card" style="width: 18rem;">
                         <div class="card-header">
                             <a asp-page="EditTeam" asp-route-TeamID="@Model.CurrentTeams[i].TeamID">Team @(i + 1)</a>
@@ -77,7 +77,7 @@
         <br />
     </div>
     <hr />
-    <div class="fillerspace"></div>
+    <br />
     <br />
     <div class="text-center">
     <h3 class="display-4">Games</h3>
@@ -92,9 +92,9 @@
     <thead>
         <tr>
             <th scope="col">Game #</th>
-            <th scope="col">Team 1</th>
+            <th scope="col">Visitors</th>
             <th scope="col">Score</th>
-            <th scope="col">Team 2</th>
+            <th scope="col">Home</th>
             <th scope="col">Score</th>
             <th scope="col">DELETE</th>
         </tr>
@@ -115,7 +115,8 @@
     </table>
 
     <div class="fillerspace"></div>
-    <div class="text-center">
+    <hr />
+    <div class="text-xs-center">
     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Tournament Complete
     </button>
