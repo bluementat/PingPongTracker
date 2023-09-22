@@ -1,0 +1,44 @@
+﻿@page
+@model PingPongTracker.Pages.Admin.GamesModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Games";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Games</h1>
+</div>
+
+<br />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Game Id</th>
+            <th scope="col">Date</th>
+            <th scope="col">Visitig Team</th>
+            <th scope="col">Score</th>
+            <th scope="col">Home Team</th>
+            <th scope="col">Score</th>
+            <th scope="col">DELETE</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < @Model.Games.Count(); i++)
+        {
+            <tr>
+                <td><a asp-page="EditGame" asp-route-GameId=@Model.Games[i].GameId>@Model.Games[i].GameId</a></td>
+                <td>@Model.Games[i].MatchupDate</td>
+                <td>@Model.Games[i].Team1Name</td>
+                <td>@Model.Games[i].Team1Score</td>
+                <td>@Model.Games[i].Team2Name</td>
+                <td>@Model.Games[i].Team2Score</td>
+                <td><a asp-page="DeleteGame" asp-route-GameId=@Model.Games[i].GameId><strong>X</strong></a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<p>
+    There are @Model.Games.Count games.
+</p>

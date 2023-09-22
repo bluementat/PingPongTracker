@@ -6,7 +6,8 @@ public static class MaintenanceOptions
 
     public static IEnumerable<MaintenanceOption> GetMaintenanceOptions()
     {
-        yield return new MaintenanceOption(1, "Player Management", "Players");      
-        yield return new MaintenanceOption(2, "Season Management", "Seasons");  
+        yield return new MaintenanceOption(1, "Player Management", "Players");
+        yield return new MaintenanceOption(2, "Season Management", "Seasons");
+        yield return new MaintenanceOption(3, "Game Management", "Games");
     }
 }

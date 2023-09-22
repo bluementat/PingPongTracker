@@ -45,6 +45,13 @@ namespace PingPongTracker.Pages.Admin.GamePlay
             Game.Player1WinnerId = GameToEdit.Team1Score > GameToEdit.Team2Score ? Game.Team1Player1Id : Game.Team2Player1Id;
             Game.Player2WinnerId = GameToEdit.Team1Score > GameToEdit.Team2Score ? Game.Team1Player2Id : Game.Team2Player2Id;
 
+            // The following code has been added to ensure that no winner is selected in the case of a tie
+            if (GameToEdit.Team1Score == GameToEdit.Team2Score)
+            {
+                Game.Player1WinnerId = Guid.Empty;
+                Game.Player2WinnerId = Guid.Empty;
+            }
+
             _context.TourneyGames.Update(Game);
             await _context.SaveChangesAsync();
             return RedirectToPage("/Admin/GamePlay/Tournament");
