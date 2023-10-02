@@ -1,6 +1,6 @@
 ﻿using PingPongTracker.Models;
 
-namespace PingPongTracker.Data;
+namespace PingPongTracker.Data.Interfaces;
 
 public interface IPlayerRepository
 {
