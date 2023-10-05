@@ -4,7 +4,7 @@ namespace PingPongTracker.Data.Interfaces;
 
 public interface IPlayerRepository
 {
-    List<Player> GetPlayers();
+    Task<IEnumerable<Player>> GetPlayers();
     Task<Player> GetPlayerById(Guid id);
     Player GetPlayerByUserName(string username);
     string GetUserNameById(Guid id);

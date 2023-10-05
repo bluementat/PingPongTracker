@@ -1,4 +1,6 @@
-﻿using PingPongTracker.Data.Interfaces;
+﻿using System.Net.WebSockets;
+using Microsoft.EntityFrameworkCore;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Data;
@@ -17,31 +19,36 @@ public class GameRepository : IGameRepository
         return await _context.Games.FindAsync(id) ?? new Game();
     }
 
-    public int GetSeasonWinsForPlayer(Guid playerId, Guid seasonId)
+    public IQueryable<Game> GetGames()
     {
-        var result = _context.Games.Where(g => g.Player1WinnerId == playerId && g.SeasonId == seasonId).Count();
-        result += _context.Games.Where(g => g.Player2WinnerId == playerId && g.SeasonId == seasonId).Count();
-        return result;
+        return _context.Games.AsQueryable();
     }
 
-    public int GetSeasonTotalGames(Guid playerId, Guid seasonId)
+    public async Task<int> GetSeasonWinsForPlayer(Guid playerId, Guid seasonId)
     {
-        return _context.Games.Where(g => g.Team1Player1Id == playerId && g.SeasonId == seasonId
+        var WinsAsPlayer1 = await GetGames().CountAsync(g => g.Player1WinnerId == playerId && g.SeasonId == seasonId);
+        var WinsAsPlayer2 = await GetGames().CountAsync(g => g.Player2WinnerId == playerId && g.SeasonId == seasonId);        
+        return WinsAsPlayer1 + WinsAsPlayer2;
+    }
+
+    public async Task<int> GetSeasonTotalGames(Guid playerId, Guid seasonId)
+    {
+        return await GetGames().CountAsync(g => g.Team1Player1Id == playerId && g.SeasonId == seasonId
                     || g.Team1Player2Id == playerId && g.SeasonId == seasonId
                     || g.Team2Player1Id == playerId && g.SeasonId == seasonId
-                    || g.Team2Player2Id == playerId && g.SeasonId == seasonId).Count();
+                    || g.Team2Player2Id == playerId && g.SeasonId == seasonId);
     }
 
-    public int GetWinsForPlayer(Guid playerId)
+    public async Task<int> GetWinsForPlayer(Guid playerId)
     {
-        var result = _context.Games.Where(g => g.Player1WinnerId == playerId).Count();
-        result += _context.Games.Where(g => g.Player2WinnerId == playerId).Count();
-        return result;
+        var WinsAsPlayer1 = await GetGames().CountAsync(g => g.Player1WinnerId == playerId);
+        var WinsAsPlayer2 = await GetGames().CountAsync(g => g.Player2WinnerId == playerId);
+        return WinsAsPlayer1 + WinsAsPlayer2;
     }
 
-    public int GetTotalGames(Guid playerId)
+    public async Task<int> GetTotalGames(Guid playerId)
     {
-        return _context.Games.Where(g => g.Team1Player1Id == playerId || g.Team1Player2Id == playerId || g.Team2Player1Id == playerId || g.Team2Player2Id == playerId).Count();
+        return await GetGames().CountAsync(g => g.Team1Player1Id == playerId || g.Team1Player2Id == playerId || g.Team2Player1Id == playerId || g.Team2Player2Id == playerId);
     }
    
     public async Task<Game> AddGameAsync(Game game)

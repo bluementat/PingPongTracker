@@ -13,9 +13,9 @@ public class PlayerRepository : IPlayerRepository
         _dbContext = dbContext;
     }
 
-    public List<Player> GetPlayers()
+    public async Task<IEnumerable<Player>> GetPlayers()
     {
-        return _dbContext.Players.ToList();
+        return await _dbContext.Players.ToListAsync();
     }
 
     public async Task<Player> GetPlayerById(Guid id)

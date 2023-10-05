@@ -14,14 +14,19 @@ public class SeasonRepository : ISeasonRepository
         _context = context;
     }
 
-    public List<Season> GetSeasons()
+    public IQueryable<Season> GetSeasons()
     {
-        return _context.Seasons.ToList();
+        return _context.Seasons;
     }
 
     public async Task<Season> GetSeasonById(Guid id)
     {
         return await _context.Seasons.FindAsync(id) ?? new Season();
+    }
+
+    public Season GetActiveSeason()
+    {
+        return _context.Seasons.Where(s => s.Active).FirstOrDefault() ?? new Season();
     }
 
     public async Task AddSeason(Season season)
