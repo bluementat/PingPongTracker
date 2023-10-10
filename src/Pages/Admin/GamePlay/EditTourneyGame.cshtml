@@ -1,12 +1,12 @@
 ﻿@page
-@model PingPongTracker.Pages.Admin.GamePlay.DeleteGameModel
+@model PingPongTracker.Pages.Admin.GamePlay.EditTourneyGameModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Delete a Game";
+    ViewData["Title"] = "Edit a Game";
 }
 
 <div class="text-center">
-    <h3 class="display-4">Delete Game</h3>
+    <h3 class="display-4">Edit Game</h3>
 </div>
 
 <div class="row">
@@ -14,37 +14,35 @@
         <form class="p-2" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                <input type="hidden" asp-for="GameToDelete.GameId" />
+                <input type="hidden" asp-for="GameToEdit.GameId" />
             </div>
             <div class="row">
                 <div class="col-md-9">
                     <label for="Team1Name" class="form-label col-form-label-sm">Team 1</label>
-                    <input type="text" class="form-control form-control-sm" asp-for="GameToDelete.Team1Name" readonly />
+                    <input type="text" class="form-control form-control-sm" asp-for="GameToEdit.Team1Name" readonly/>
                 </div>
                 <div class="col-md-3">
                     <label for="Team1Score" class="form-label col-form-label-sm">Score</label>
-                    <input type="number" class="form-control form-control-sm" asp-for="GameToDelete.Team1Score"
-                        readonly />
+                    <input type="number" class="form-control form-control-sm" asp-for="GameToEdit.Team1Score" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-9">
                     <label for="Team2Name" class="form-label col-form-label-sm">Team 2</label>
-                    <input type="text" class="form-control form-control-sm" asp-for="GameToDelete.Team2Name" readonly />
+                    <input type="text" class="form-control form-control-sm" asp-for="GameToEdit.Team2Name" readonly/>
                 </div>
                 <div class="col-md-3">
                     <label for="Team2Score" class="form-label col-form-label-sm">Score</label>
-                    <input type="number" class="form-control form-control-sm" asp-for="GameToDelete.Team2Score"
-                        readonly />
+                    <input type="number" class="form-control form-control-sm" asp-for="GameToEdit.Team2Score" />
                 </div>
             </div>
             <br />
-            <button type="submit" class="btn btn-lg btn-danger">Delete Game</button>
+            <button type="submit" class="btn btn-lg btn-primary">Edit Game</button>
         </form>
     </div>
 </div>
 
 <br />
 <p>
-<h5><a asp-page="/Admin/Games">Cancel - Return to Games</a></h5>
+<h5><a asp-page="/Admin/GamePlay/Tournament">Cancel - Return to Tournament</a></h5>
 </p>

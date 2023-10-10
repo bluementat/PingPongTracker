@@ -9,21 +9,23 @@ namespace PingPongTracker.Pages.Admin
     public class ActiveSeasonVerifyModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        private readonly ISeasonRepository _repo;
+        private readonly ISeasonRepository _seasonRepository;
+        private readonly ITourneyGameRepository _TGRepository;
 
         [BindProperty]
         public Season SeasonToUpdate { get; set; } = new();
 
-        public ActiveSeasonVerifyModel(ApplicationDbContext context, ISeasonRepository Repo)
+        public ActiveSeasonVerifyModel(ApplicationDbContext context, ISeasonRepository Repo, ITourneyGameRepository TGRepo)
         {
             _context = context;
-            _repo = Repo;
+            _seasonRepository = Repo;
+            _TGRepository = TGRepo;
         }
 
 
         public async Task OnGet(Guid SeasonId)
         {
-            SeasonToUpdate = await _repo.GetSeasonById(SeasonId);
+            SeasonToUpdate = await _seasonRepository.GetSeasonById(SeasonId);
         }
 
         public IActionResult OnPostNewSeasonInactive()
@@ -33,12 +35,12 @@ namespace PingPongTracker.Pages.Admin
 
         public async Task<IActionResult> OnPostActivateNewSeason()
         {
-            _context.TourneyGames.RemoveRange(_context.TourneyGames);
+            await _TGRepository.RemoveRange(_TGRepository.GetTourneyGames().ToList());
             _context.Teams.RemoveRange(_context.Teams);
             await _context.SaveChangesAsync();
 
             SeasonToUpdate.Active = true;
-            await _repo.UpdateSeason(SeasonToUpdate);
+            await _seasonRepository.UpdateSeason(SeasonToUpdate);
 
             return RedirectToPage("Seasons");
         }

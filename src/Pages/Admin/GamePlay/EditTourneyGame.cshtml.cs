@@ -8,14 +8,14 @@ using PingPongTracker.Models;
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
-    public class EditGameModel : PageModel
+    public class EditTourneyGameModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
         [BindProperty]
         public GameViewModel GameToEdit { get; set; } = new GameViewModel();
 
-        public EditGameModel(ApplicationDbContext context)
+        public EditTourneyGameModel(ApplicationDbContext context)
         {
             _context = context;
         }

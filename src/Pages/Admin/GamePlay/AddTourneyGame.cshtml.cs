@@ -4,23 +4,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NuGet.Versioning;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
-    public class AddGameModel : PageModel
-    {
-        private readonly ApplicationDbContext _context;
+    public class AddTourneyGameModel : PageModel
+    {        
+        private readonly ITeamRepository _teamRepository;
+        private readonly ITourneyGameRepository _tgRepository;
+        private readonly ISeasonRepository _seasonRepository;
 
         [BindProperty]
         public GameViewModel GameToAdd { get; set; } = new GameViewModel();
 
         public SelectList TeamSelectList { get; set; } = new SelectList(new List<TeamOptionViewModel>());
 
-        public AddGameModel(ApplicationDbContext context)
+        public AddTourneyGameModel(ITeamRepository teamRepository, ITourneyGameRepository TGRepository, ISeasonRepository seasonRepository)
         {
-            _context = context;
+            _teamRepository = teamRepository;
+            _tgRepository = TGRepository;
+            _seasonRepository = seasonRepository;
         }
 
         public void OnGet()
@@ -37,9 +42,9 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
             TeamSelectList = GetTeamOptions();
 
-            var Team1 = _context.Teams.Find(GameToAdd.Team1Id) ?? new Team();
-            var Team2 = _context.Teams.Find(GameToAdd.Team2Id) ?? new Team();
-            var CurrentSeason = _context.Seasons.Where(s => s.Active == true).FirstOrDefault() ?? new Season();
+            var Team1 = await _teamRepository.GetTeamAsync(GameToAdd.Team1Id)  ?? new Team();
+            var Team2 = await _teamRepository.GetTeamAsync(GameToAdd.Team2Id) ?? new Team();
+            var CurrentSeason = _seasonRepository.GetSeasons().Where(s => s.Active == true).FirstOrDefault() ?? new Season();
 
             var NewGame = new TourneyGame
             {
@@ -57,8 +62,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 SeasonId = CurrentSeason.SeasonId
             };
 
-            _context.TourneyGames.Add(NewGame);
-            await _context.SaveChangesAsync();
+            await _tgRepository.AddTourneyGame(NewGame);            
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
 

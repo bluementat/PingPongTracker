@@ -65,7 +65,7 @@ public class GameRepository : IGameRepository
         return game;
     }
 
-    public async Task DeleteGameAsync(int id)
+    public async Task DeleteGameAsync(Guid id)
     {
         var game = await _context.Games.FindAsync(id);
         _context.Games.Remove(game!);

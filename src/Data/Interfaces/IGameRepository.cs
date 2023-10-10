@@ -5,7 +5,6 @@ namespace PingPongTracker.Data.Interfaces;
 public interface IGameRepository
 {
     Task<Game> GetGameAsync(Guid id);
-
     IQueryable<Game> GetGames();
     Task<int> GetSeasonWinsForPlayer(Guid playerId, Guid seasonId);
     Task<int> GetSeasonTotalGames(Guid playerId, Guid seasonId);
@@ -13,5 +12,5 @@ public interface IGameRepository
     Task<int> GetTotalGames(Guid playerId);
     Task<Game> AddGameAsync(Game game);
     Task<Game> UpdateGameAsync(Game game);
-    Task DeleteGameAsync(int id);
+    Task DeleteGameAsync(Guid id);
 }

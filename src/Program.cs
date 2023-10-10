@@ -19,6 +19,7 @@ builder.Services.AddTransient<IPlayerRepository>(provider => new PlayerRepositor
 builder.Services.AddTransient<ISeasonRepository>(provider => new SeasonRepository(provider.GetRequiredService<ApplicationDbContext>()));
 builder.Services.AddTransient<IGameRepository>(provider => new GameRepository(provider.GetRequiredService<ApplicationDbContext>()));
 builder.Services.AddTransient<ITeamRepository>(provider => new TeamRepository(provider.GetRequiredService<ApplicationDbContext>()));
+builder.Services.AddTransient<ITourneyGameRepository>(provider => new TourneyGameRepository(provider.GetRequiredService<ApplicationDbContext>()));
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

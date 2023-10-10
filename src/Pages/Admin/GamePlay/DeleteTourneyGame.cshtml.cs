@@ -7,14 +7,14 @@ using PingPongTracker.Models;
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
-    public class DeleteGameModel : PageModel
+    public class DeleteTourneyGameModel : PageModel
     {
         private readonly ApplicationDbContext _context;
 
         [BindProperty]
         public GameViewModel GameToDelete { get; set; } = new GameViewModel();
 
-        public DeleteGameModel(ApplicationDbContext context)
+        public DeleteTourneyGameModel(ApplicationDbContext context)
         {
             _context = context;
         }
