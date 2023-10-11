@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using NuGet.Versioning;
 using PingPongTracker.Data;
 using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
@@ -71,16 +70,13 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         private SelectList GetTeamOptions()
         {
-            List<TeamOptionViewModel> TeamOptions = new List<TeamOptionViewModel>();
-
-            foreach (Team team in _context.Teams)
-            {
-                TeamOptions.Add(new TeamOptionViewModel
+            List<TeamOptionViewModel> TeamOptions = _teamRepository.GetTeams()                
+                .AsEnumerable()
+                .Select(t => new TeamOptionViewModel
                 {
-                    Value = team.TeamID,
-                    Text = GamePlayUtilities.CreateTeamName(team.Player1UserName, team.Player2UserName)
-                });
-            }
+                    Value = t.TeamID,
+                    Text = GamePlayUtilities.CreateTeamName(t.Player1UserName, t.Player2UserName)
+                }).ToList();            
 
             return new SelectList(TeamOptions, "Value", "Text");
         }
