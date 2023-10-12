@@ -4,7 +4,7 @@ namespace PingPongTracker.Data.Interfaces;
 
 public interface ITourneyGameRepository
 {
-    IQueryable<TourneyGame> GetTourneyGames();    
+    IEnumerable<TourneyGame> GetTourneyGames();    
     Task<TourneyGame> GetTourneyGameById(Guid tourneyGameId);
     Task AddTourneyGame(TourneyGame tourneyGame);    
     Task UpdateTourneyGame(TourneyGame tourneyGame);

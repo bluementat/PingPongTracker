@@ -13,7 +13,7 @@ public class TourneyGameRepository : ITourneyGameRepository
         _context = context;
     }
 
-    public IQueryable<TourneyGame> GetTourneyGames()
+    public IEnumerable<TourneyGame> GetTourneyGames()
     {
         return _context.TourneyGames;
     }

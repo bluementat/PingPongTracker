@@ -24,9 +24,9 @@ public class SeasonRepository : ISeasonRepository
         return await _context.Seasons.FindAsync(id) ?? new Season();
     }
 
-    public Season GetActiveSeason()
+    public Season? GetActiveSeason()
     {
-        return _context.Seasons.Where(s => s.Active).FirstOrDefault() ?? new Season();
+        return _context.Seasons.Where(s => s.Active).FirstOrDefault();
     }
 
     public async Task AddSeason(Season season)

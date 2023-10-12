@@ -48,7 +48,7 @@ public class IndexModel : PageModel
 
         // Get and display the current season and the standings, if there is one.
         CurrentSeason = _seasonRepository.GetActiveSeason();
-        if (CurrentSeason != new Season())
+        if (CurrentSeason is not null)
         {
             CurrentTeams = _teamRepository.GetTeams().ToList();             
 

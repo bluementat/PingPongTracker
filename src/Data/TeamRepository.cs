@@ -12,7 +12,7 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }  
 
-    public IQueryable<Team> GetTeams()
+    public IEnumerable<Team> GetTeams()
     {
         return _context.Teams;
     }  
@@ -44,5 +44,10 @@ public class TeamRepository : ITeamRepository
             _context.Teams.Remove(team);
             await _context.SaveChangesAsync();
         }    
+    }
+
+    public void RemoveRange(IList<Team> teams)
+    {
+        _context.Teams.RemoveRange(teams);
     }
 }
