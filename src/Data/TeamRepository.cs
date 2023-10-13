@@ -46,6 +46,12 @@ public class TeamRepository : ITeamRepository
         }    
     }
 
+    public async Task AddRangeAsync(IList<Team> teams)
+    {
+        await _context.Teams.AddRangeAsync(teams);
+        await _context.SaveChangesAsync();
+    }
+
     public void RemoveRange(IList<Team> teams)
     {
         _context.Teams.RemoveRange(teams);

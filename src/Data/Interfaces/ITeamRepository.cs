@@ -9,5 +9,6 @@ public interface ITeamRepository
     Task<Team> AddTeamAsync(Team team);
     Task<Team> UpdateTeamAsync(Team team);
     Task DeleteTeamAsync(int id);
+    Task AddRangeAsync(IList<Team> teams);
     void RemoveRange(IList<Team> teams);
 }

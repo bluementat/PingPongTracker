@@ -70,8 +70,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         private SelectList GetTeamOptions()
         {
-            List<TeamOptionViewModel> TeamOptions = _teamRepository.GetTeams()                
-                .AsEnumerable()
+            List<TeamOptionViewModel> TeamOptions = _teamRepository.GetTeams()                                
                 .Select(t => new TeamOptionViewModel
                 {
                     Value = t.TeamID,

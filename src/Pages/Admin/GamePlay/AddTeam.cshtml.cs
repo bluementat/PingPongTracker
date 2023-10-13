@@ -9,7 +9,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 {
     public class AddTeamModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITeamRepository _teamRepository;
         private readonly IPlayerRepository _playerRepository;
 
         [BindProperty]
@@ -17,9 +17,9 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 
         public SelectList ListOfPlayers { get; set; } = new SelectList(new List<SelectListItem>());
 
-        public AddTeamModel(ApplicationDbContext context, IPlayerRepository playerRepository)
+        public AddTeamModel(ITeamRepository teamRepository,IPlayerRepository playerRepository)
         {
-            _context = context;
+            _teamRepository = teamRepository;
             _playerRepository = playerRepository;
         }
         
@@ -47,8 +47,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 Player2UserName = ListOfPlayers.First(p => p.Value == TeamToAdd.Player2Id.ToString()).Text
             };
 
-            _context.Teams.Add(NewTeam);
-            await _context.SaveChangesAsync();
+            await _teamRepository.AddTeamAsync(NewTeam);            
 
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
@@ -57,16 +56,12 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         private SelectList GetPlayerOptions()
         {
             var Players = _playerRepository.GetActivePlayers();
-            var PlayerOptions = new List<SelectListItem>();
-
-            foreach (var player in Players)
-            {
-                PlayerOptions.Add(new SelectListItem
-                {
-                    Value = player.PlayerId.ToString(),
-                    Text = player.UserName
-                });
-            }
+            var PlayerOptions = from player in Players
+                                select new SelectListItem
+                                {
+                                    Value = player.PlayerId.ToString(),
+                                    Text = player.UserName
+                                };
 
             return new SelectList(PlayerOptions, "Value", "Text");
         }

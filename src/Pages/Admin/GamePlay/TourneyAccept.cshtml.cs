@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Extensions;
 using PingPongTracker.Models;
 
@@ -9,15 +10,15 @@ namespace PingPongTracker.Pages.Admin.GamePlay
 {
     public class TourneyAcceptModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITeamRepository _teamRepository;
 
         [BindProperty]
         public List<Team> ProposedTeams { get; set; } = new List<Team>();        
         
-        public TourneyAcceptModel(ApplicationDbContext context)
-        {            
-            _context = context;            
-        }
+        public TourneyAcceptModel(ITeamRepository teamRepository)
+        {
+            _teamRepository = teamRepository;
+        }        
         
         public void OnGet(Guid id)
         {
@@ -27,8 +28,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         public async Task<IActionResult> OnPostAcceptTeams()
         {
             ProposedTeams = HttpContext.Session.Get<List<Team>>("CandidateTeams");
-            _context.Teams.AddRange(ProposedTeams);
-            await _context.SaveChangesAsync();
+            await _teamRepository.AddRangeAsync(ProposedTeams);            
 
             return RedirectToPage("Tournament");
         }    
