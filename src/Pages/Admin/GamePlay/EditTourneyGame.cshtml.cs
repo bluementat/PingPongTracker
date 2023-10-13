@@ -1,28 +1,30 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
-    public class EditGameModel : PageModel
+    public class EditTourneyGameModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITourneyGameRepository _tgRepository;
 
         [BindProperty]
         public GameViewModel GameToEdit { get; set; } = new GameViewModel();
 
-        public EditGameModel(ApplicationDbContext context)
+        public EditTourneyGameModel(ITourneyGameRepository TGRepository)
         {
-            _context = context;
+            _tgRepository = TGRepository;
         }
 
-        public void OnGet(Guid GameId)
+        public async Task OnGet(Guid GameId)
         {
-            var Game = _context.TourneyGames.Find(GameId) ?? new TourneyGame();
+            var Game = await _tgRepository.GetTourneyGameById(GameId) ?? new TourneyGame();
 
             GameToEdit.GameId = Game.GameId;
             GameToEdit.Team1Name = Game.Team1Name;
@@ -38,7 +40,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 return Page();
             }
 
-            var Game = _context.TourneyGames.Find(GameToEdit.GameId) ?? new TourneyGame();
+            var Game = await _tgRepository.GetTourneyGameById(GameToEdit.GameId) ?? new TourneyGame();
 
             Game.Team1Score = GameToEdit.Team1Score;
             Game.Team2Score = GameToEdit.Team2Score;
@@ -52,8 +54,8 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 Game.Player2WinnerId = Guid.Empty;
             }
 
-            _context.TourneyGames.Update(Game);
-            await _context.SaveChangesAsync();
+            await _tgRepository.UpdateTourneyGame(Game);
+            
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
 

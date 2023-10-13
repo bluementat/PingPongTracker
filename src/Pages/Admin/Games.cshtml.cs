@@ -1,25 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
 {
     public class GamesModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IGameRepository _gameRepository;
 
         [BindProperty]
         public List<Game> Games { get; set; } = new();
 
-        public GamesModel(ApplicationDbContext context)
+        public GamesModel(IGameRepository gameRepository)
         {
-            _context = context;
+            _gameRepository = gameRepository;
         }
 
         public void OnGet()
         {
-            Games = _context.Games.ToList();
+            Games = _gameRepository.GetGames().ToList();
         }
     }
 }

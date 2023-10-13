@@ -2,26 +2,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
-    public class DeleteGameModel : PageModel
+    public class DeleteTourneyGameModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITourneyGameRepository _tgRepository;
 
         [BindProperty]
         public GameViewModel GameToDelete { get; set; } = new GameViewModel();
 
-        public DeleteGameModel(ApplicationDbContext context)
+        public DeleteTourneyGameModel(ITourneyGameRepository TGRepository)
         {
-            _context = context;
+            _tgRepository = TGRepository;
         }
 
-        public void OnGet(Guid GameId)
+        public async void OnGet(Guid GameId)
         {
-            var Game = _context.TourneyGames.Find(GameId) ?? new TourneyGame();
+            var Game = await _tgRepository.GetTourneyGameById(GameId) ?? new TourneyGame();
 
             GameToDelete.GameId = Game.GameId;
             GameToDelete.Team1Name = Game.Team1Name;
@@ -38,10 +39,9 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 return Page();
             }
 
-            var Game = _context.TourneyGames.Find(GameToDelete.GameId) ?? new TourneyGame();
-
-            _context.TourneyGames.Remove(Game);
-            await _context.SaveChangesAsync();
+            var Game = await _tgRepository.GetTourneyGameById(GameToDelete.GameId) ?? new TourneyGame();            
+            await _tgRepository.DeleteTourneyGame(Game.GameId);
+            
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
     }

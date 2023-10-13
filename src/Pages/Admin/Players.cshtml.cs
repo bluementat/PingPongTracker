@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
@@ -9,20 +10,19 @@ namespace PingPongTracker.Pages.Admin
     [Authorize(Roles = "Admin")]
     public class PlayersModel : PageModel
     {
-        private readonly IPlayerRepository _repo;
+        private readonly IPlayerRepository _playerRepository;
         
-        public List<Player> Players { get; set; } = new();
+        public IEnumerable<Player> Players { get; set; } = new List<Player>();
 
         // constructor
-        public PlayersModel(IPlayerRepository repo)
+        public PlayersModel(IPlayerRepository playerRepository)
         {
-            _repo = repo;
-            Players = _repo.GetPlayers();
-        }
+            _playerRepository = playerRepository;            
+        }        
         
-        
-        public void OnGet()
+        public async Task OnGet()
         {
+            Players = await _playerRepository.GetPlayers();
         }
     }
 }

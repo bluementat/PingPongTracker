@@ -7,8 +7,9 @@
             "type": "process",
             "args": [
                 "build",
+                "${workspaceFolder}/PingPongTracker.sln",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -18,8 +19,9 @@
             "type": "process",
             "args": [
                 "publish",
+                "${workspaceFolder}/PingPongTracker.sln",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -29,7 +31,9 @@
             "type": "process",
             "args": [
                 "watch",
-                "run"
+                "run",
+                "--project",
+                "${workspaceFolder}/PingPongTracker.sln"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 using PingPongTracker.Pages.Admin;
 using PingPongTracker.Tests.TestData;
@@ -35,15 +36,15 @@ public class RazorPagesTests
     }
 
     [Test]
-    public void OnGetPlayers_ReturnsListOfPlayers()
+    public async Task OnGetPlayers_ReturnsListOfPlayers()
     {        
         var mockPlayersRepo = new Mock<IPlayerRepository>(MockBehavior.Strict);
         var expectedPlayersList = PlayersList01.GetPlayers();
-        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).ReturnsAsync(expectedPlayersList);
         
         var pageModel = new PlayersModel(mockPlayersRepo.Object);
 
-        pageModel.OnGet();
+        await pageModel.OnGet();
 
         var actualPlayersList = pageModel.Players;
 
@@ -56,7 +57,7 @@ public class RazorPagesTests
     {
         var mockPlayersRepo = new Mock<IPlayerRepository>();
         var expectedPlayersList = PlayersList01.GetPlayers();
-        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).ReturnsAsync(expectedPlayersList);
         
         var pageModel = new AddPlayerModel(mockPlayersRepo.Object);
 
@@ -72,7 +73,7 @@ public class RazorPagesTests
     {
         var mockPlayersRepo = new Mock<IPlayerRepository>();
         var expectedPlayersList = PlayersList01.GetPlayers();
-        mockPlayersRepo.Setup(repo => repo.GetPlayers()).Returns(expectedPlayersList);
+        mockPlayersRepo.Setup(repo => repo.GetPlayers()).ReturnsAsync(expectedPlayersList);
         
         var pageModel = new AddPlayerModel(mockPlayersRepo.Object);
 

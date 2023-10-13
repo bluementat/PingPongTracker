@@ -4,36 +4,37 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin.GamePlay
 {
     [Authorize(Roles = "Admin")]
     public class EditTeamModel : PageModel
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly IPlayerRepository _playerrepo;
+    {        
+        private readonly ITeamRepository _teamRepository;
+        private readonly IPlayerRepository _playerRepository;
 
         [BindProperty]
         public Team TeamToEdit { get; set; } = new Team();
 
         public SelectList ActivePlayerSelectList { get; set; } = new SelectList(new List<TeamPlayerViewModel>());
 
-        public EditTeamModel(ApplicationDbContext context, IPlayerRepository playerrepo)
+        public EditTeamModel(ITeamRepository teamRepository, IPlayerRepository playerrepo)
         {
-            _context = context;
-            _playerrepo = playerrepo;
+            _teamRepository = teamRepository;
+            _playerRepository = playerrepo;
         }
 
-        public void OnGet(int TeamID)
+        public async Task OnGet(int TeamID)
         {
-            TeamToEdit = _context.Teams.Find(TeamID) ?? new Team();
-            ActivePlayerSelectList = GetPlayerOptions();
+            TeamToEdit = await _teamRepository.GetTeamAsync(TeamID) ?? new Team();
+            ActivePlayerSelectList = await GetPlayerOptions();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ActivePlayerSelectList = GetPlayerOptions();
+            ActivePlayerSelectList = await GetPlayerOptions();
 
             if (!ModelState.IsValid)
             {
@@ -46,21 +47,22 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 return Page();
             }
 
-            TeamToEdit.Player1UserName = _playerrepo.GetUserNameById(TeamToEdit.Player1Id);
-            TeamToEdit.Player2UserName = _playerrepo.GetUserNameById(TeamToEdit.Player2Id);
+            TeamToEdit.Player1UserName = _playerRepository.GetUserNameById(TeamToEdit.Player1Id);
+            TeamToEdit.Player2UserName = _playerRepository.GetUserNameById(TeamToEdit.Player2Id);
 
-            _context.Teams.Update(TeamToEdit);
-            await _context.SaveChangesAsync();
+            await _teamRepository.UpdateTeamAsync(TeamToEdit);            
             return RedirectToPage("/Admin/GamePlay/Tournament");
         }
 
-        private SelectList GetPlayerOptions()
+        private async Task<SelectList> GetPlayerOptions()
         {
             List<TeamPlayerViewModel> PlayerOptions = new List<TeamPlayerViewModel>
             {
                 new TeamPlayerViewModel { PlayerId = Guid.Empty, UserName = "Select Player" }
             };
-            PlayerOptions.AddRange(_context.Players.Where(p => p.Active).Select(p => new TeamPlayerViewModel { PlayerId = p.PlayerId, UserName = p.UserName }).ToList());
+            
+            var players = await _playerRepository.GetPlayers();            
+            PlayerOptions.AddRange(players.Where(p => p.Active).Select(p => new TeamPlayerViewModel { PlayerId = p.PlayerId, UserName = p.UserName }).ToList());
 
             return new SelectList(PlayerOptions, "PlayerId", "UserName");
         }

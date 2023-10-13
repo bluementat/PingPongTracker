@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Extensions;
 using PingPongTracker.Models;
 
@@ -12,6 +13,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
     public class TournamentModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly IGameRepository _gameRepository;
         private readonly IPlayerRepository _playerRepository;
         private IEnumerable<Player> _activePlayers;
 
@@ -25,10 +27,11 @@ namespace PingPongTracker.Pages.Admin.GamePlay
         [BindProperty]
         public List<GameViewModel> Games { get; set; } = new List<GameViewModel>();
 
-        public TournamentModel(ApplicationDbContext context, IPlayerRepository playerRepository)
+        public TournamentModel(ApplicationDbContext context, IPlayerRepository playerRepository, IGameRepository gameRepository)
         {
             _context = context;
             _playerRepository = playerRepository;
+            _gameRepository = gameRepository;
             _activePlayers = _playerRepository.GetActivePlayers();
         }
 
@@ -135,6 +138,7 @@ namespace PingPongTracker.Pages.Admin.GamePlay
                 });
                 _context.TourneyGames.Remove(TounamentGame);
             }
+            
 
             _context.Teams.RemoveRange(_context.Teams);
 

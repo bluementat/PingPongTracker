@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PingPongTracker.Areas.Identity.Data;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddTransient<IPlayerRepository>(provider => new PlayerRepository(provider.GetRequiredService<ApplicationDbContext>()));
 builder.Services.AddTransient<ISeasonRepository>(provider => new SeasonRepository(provider.GetRequiredService<ApplicationDbContext>()));
+builder.Services.AddTransient<IGameRepository>(provider => new GameRepository(provider.GetRequiredService<ApplicationDbContext>()));
+builder.Services.AddTransient<ITeamRepository>(provider => new TeamRepository(provider.GetRequiredService<ApplicationDbContext>()));
+builder.Services.AddTransient<ITourneyGameRepository>(provider => new TourneyGameRepository(provider.GetRequiredService<ApplicationDbContext>()));
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

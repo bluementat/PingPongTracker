@@ -1,25 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
 {
     public class EditGameModel : PageModel
-    {
-        private readonly ApplicationDbContext _context;
+    {        
+        private readonly IGameRepository _gameRepository;
 
         [BindProperty]
         public Game GameToEdit { get; set; } = new();
 
-        public EditGameModel(ApplicationDbContext context)
+        public EditGameModel(IGameRepository gameRepository)
         {
-            _context = context;
+            _gameRepository = gameRepository;
         }
 
-        public void OnGet(Guid GameId)
+        public async Task OnGet(Guid GameId)
         {
-            GameToEdit = _context.Games.Find(GameId) ?? new Game();
+            GameToEdit = await _gameRepository.GetGameAsync(GameId) ?? new Game();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -39,8 +40,7 @@ namespace PingPongTracker.Pages.Admin
                 GameToEdit.Player2WinnerId = Guid.Empty;
             }
 
-            _context.Games.Update(GameToEdit);
-            await _context.SaveChangesAsync();
+            await _gameRepository.UpdateGameAsync(GameToEdit);
             return RedirectToPage("/Admin/Games");
         }
     }

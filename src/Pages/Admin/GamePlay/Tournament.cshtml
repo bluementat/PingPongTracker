@@ -87,7 +87,7 @@
 </div>
 
     <p>
-<h4><a asp-page="/Admin/GamePlay/AddGame">Add Game</a></h4>
+<h4><a asp-page="/Admin/GamePlay/AddTourneyGame">Add Game</a></h4>
 </p>
 
     <br />
@@ -106,12 +106,12 @@
         @for (int i = 0; i < @Model.Games.Count(); i++)
             {
                 <tr>
-                    <td><a asp-page="EditGame" asp-route-GameId=@Model.Games[i].GameId>@(i + 1)</a></td>
+                    <td><a asp-page="EditTourneyGame" asp-route-GameId=@Model.Games[i].GameId>@(i + 1)</a></td>
                     <td>@Model.Games[i].Team1Name</td>
                     <td>@Model.Games[i].Team1Score</td>
                     <td>@Model.Games[i].Team2Name</td>
                     <td>@Model.Games[i].Team2Score</td>
-                    <td><a asp-page="DeleteGame" asp-route-GameId=@Model.Games[i].GameId><strong>X</strong></a></td>
+                    <td><a asp-page="DeleteTourneyGame" asp-route-GameId=@Model.Games[i].GameId><strong>X</strong></a></td>
                 </tr>
             }
         </tbody>

@@ -1,28 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
 {
     public class ActiveSeasonVerifyModel : PageModel
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly ISeasonRepository _repo;
+    {        
+        private readonly ISeasonRepository _seasonRepository;
+        private readonly ITeamRepository _teamRepository;
+        private readonly ITourneyGameRepository _tgRepository;
 
         [BindProperty]
         public Season SeasonToUpdate { get; set; } = new();
 
-        public ActiveSeasonVerifyModel(ApplicationDbContext context, ISeasonRepository Repo)
-        {
-            _context = context;
-            _repo = Repo;
+        public ActiveSeasonVerifyModel(ISeasonRepository seasonRepository, ITeamRepository teamRepository, ITourneyGameRepository TGRepo)
+        {            
+            _seasonRepository = seasonRepository;
+            _teamRepository = teamRepository;
+            _tgRepository = TGRepo;
         }
 
 
         public async Task OnGet(Guid SeasonId)
         {
-            SeasonToUpdate = await _repo.GetSeasonById(SeasonId);
+            SeasonToUpdate = await _seasonRepository.GetSeasonById(SeasonId);
         }
 
         public IActionResult OnPostNewSeasonInactive()
@@ -32,12 +35,11 @@ namespace PingPongTracker.Pages.Admin
 
         public async Task<IActionResult> OnPostActivateNewSeason()
         {
-            _context.TourneyGames.RemoveRange(_context.TourneyGames);
-            _context.Teams.RemoveRange(_context.Teams);
-            await _context.SaveChangesAsync();
+            await _tgRepository.RemoveRange(_tgRepository.GetTourneyGames().ToList());
+            _teamRepository.RemoveRange(_teamRepository.GetTeams().ToList());            
 
             SeasonToUpdate.Active = true;
-            await _repo.UpdateSeason(SeasonToUpdate);
+            await _seasonRepository.UpdateSeason(SeasonToUpdate);
 
             return RedirectToPage("Seasons");
         }

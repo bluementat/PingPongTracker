@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingPongTracker.Data;
+using PingPongTracker.Data.Interfaces;
 using PingPongTracker.Models;
 
 namespace PingPongTracker.Pages.Admin
@@ -9,14 +10,14 @@ namespace PingPongTracker.Pages.Admin
     [Authorize(Roles = "Admin")]
     public class AddPlayerModel : PageModel
     {        
-        private readonly IPlayerRepository _repo;
+        private readonly IPlayerRepository _playerRepository;
         
         [BindProperty]
         public Player NewPlayer { get; set; } = new();
         
-        public AddPlayerModel(IPlayerRepository repo)
+        public AddPlayerModel(IPlayerRepository playerRepository)
         {
-            _repo = repo;
+            _playerRepository = playerRepository;
         }
 
         public IActionResult OnGet()
@@ -30,7 +31,7 @@ namespace PingPongTracker.Pages.Admin
             {
                 return Page();
             }            
-            await _repo.AddPlayer(NewPlayer);                        
+            await _playerRepository.AddPlayer(NewPlayer);                        
             return RedirectToPage("Players");
         }
     }
